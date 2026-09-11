@@ -1,6 +1,9 @@
+import { useForm, ValidationError } from '@formspree/react'
 import './Contact.css'
 
 function Contact() {
+  const [state, handleSubmit] = useForm('mwlkzzvr')
+
   const whatsappUrl =
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
 
@@ -42,6 +45,7 @@ function Contact() {
         <form
           className="contact__form"
           aria-label="Formulário de contato"
+          onSubmit={handleSubmit}
         >
           <div className="contact__field">
             <label htmlFor="name">Nome</label>
@@ -80,6 +84,12 @@ function Contact() {
                 autoComplete="email"
                 required
               />
+
+              <ValidationError
+                prefix="E-mail"
+                field="email"
+                errors={state.errors}
+              />
             </div>
 
             <div className="contact__field">
@@ -107,16 +117,31 @@ function Contact() {
               placeholder="Conte um pouco sobre o problema, processo ou ideia..."
               required
             />
+
+            <ValidationError
+              prefix="Mensagem"
+              field="message"
+              errors={state.errors}
+            />
           </div>
 
-          <button className="contact__submit" type="submit">
-            Enviar mensagem
+          <button
+            className="contact__submit"
+            type="submit"
+            disabled={state.submitting}
+          >
+            {state.submitting ? 'Enviando...' : 'Enviar mensagem'}
           </button>
 
-          <p className="contact__note">
-            O envio automático do formulário será conectado na etapa de
-            integração do site.
-          </p>
+          {state.succeeded && (
+            <p className="contact__success" role="status">
+              Mensagem enviada com sucesso. Em breve entraremos em contato.
+            </p>
+          )}
+
+          {!state.succeeded && state.errors && (
+            <ValidationError errors={state.errors} />
+          )}
         </form>
       </div>
     </section>

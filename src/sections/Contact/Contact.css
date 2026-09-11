@@ -33,6 +33,7 @@
 
 .contact__eyebrow {
   display: inline-block;
+
   margin-bottom: 20px;
 
   color: var(--color-cyan);
@@ -55,6 +56,7 @@
 
 .contact__intro {
   max-width: 560px;
+
   margin-top: 24px;
 
   color: var(--color-text-secondary);
@@ -65,6 +67,7 @@
 
 .contact__direct {
   margin-top: 40px;
+
   padding-top: 28px;
 
   border-top: 1px solid var(--border-color);
@@ -72,6 +75,7 @@
 
 .contact__direct-label {
   display: block;
+
   margin-bottom: 14px;
 
   color: var(--color-text-secondary);
@@ -115,6 +119,7 @@
 .contact__field {
   display: flex;
   flex-direction: column;
+
   gap: 10px;
 }
 
@@ -125,6 +130,7 @@
 .contact__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
+
   gap: 18px;
 
   margin-top: 22px;
@@ -161,11 +167,13 @@
 
 .contact__field input {
   height: 50px;
+
   padding: 0 14px;
 }
 
 .contact__field textarea {
   padding: 14px;
+
   resize: vertical;
 }
 
@@ -198,11 +206,40 @@
   font-weight: 600;
 
   cursor: pointer;
+
+  transition:
+    background var(--transition-default),
+    transform var(--transition-default),
+    opacity var(--transition-default);
 }
 
-.contact__submit:hover {
+.contact__submit:hover:not(:disabled) {
   background: #1d4ed8;
+
   transform: translateY(-2px);
+}
+
+.contact__submit:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.contact__success {
+  margin-top: 16px;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: var(--border-radius-sm);
+
+  background: rgba(6, 182, 212, 0.08);
+  color: var(--color-white);
+
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .contact__note {
@@ -217,6 +254,7 @@
 @media (max-width: 900px) {
   .contact__container {
     grid-template-columns: 1fr;
+
     gap: 48px;
   }
 }
@@ -232,11 +270,13 @@
 
   .contact__intro {
     margin-top: 18px;
+
     font-size: 0.98rem;
   }
 
   .contact__direct {
     margin-top: 30px;
+
     padding-top: 22px;
   }
 
@@ -246,6 +286,7 @@
 
   .contact__row {
     grid-template-columns: 1fr;
+
     gap: 22px;
   }
 
