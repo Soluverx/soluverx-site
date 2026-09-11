@@ -1,0 +1,149 @@
+.differentials {
+  padding: 120px 0;
+
+  border-top: 1px solid var(--border-color);
+
+  background:
+    radial-gradient(
+      circle at 75% 30%,
+      rgba(37, 99, 235, 0.08),
+      transparent 32%
+    ),
+    var(--color-background);
+}
+
+.differentials__container {
+  width: min(
+    calc(100% - (var(--container-padding) * 2)),
+    var(--container-width)
+  );
+
+  margin: 0 auto;
+}
+
+.differentials__header {
+  max-width: 780px;
+
+  margin-bottom: 64px;
+}
+
+.differentials__eyebrow {
+  display: inline-block;
+
+  margin-bottom: 20px;
+
+  color: var(--color-cyan);
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.differentials__title {
+  max-width: 760px;
+
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-weight: 700;
+
+  letter-spacing: -0.04em;
+}
+
+.differentials__intro {
+  max-width: 640px;
+
+  margin-top: 24px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.differentials__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+}
+
+.differential-card {
+  min-height: 230px;
+
+  padding: 32px;
+
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 24px;
+
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+
+  background: rgba(31, 41, 55, 0.12);
+
+  transition:
+    background var(--transition-default),
+    transform var(--transition-default);
+}
+
+.differential-card:hover {
+  background: rgba(31, 41, 55, 0.3);
+}
+
+.differential-card__number {
+  color: var(--color-cyan);
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.differential-card__content {
+  align-self: center;
+}
+
+.differential-card__title {
+  color: var(--color-white);
+
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.differential-card__description {
+  margin-top: 14px;
+
+  max-width: 460px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 800px) {
+  .differentials__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .differentials {
+    padding: 88px 0;
+  }
+
+  .differentials__header {
+    margin-bottom: 44px;
+  }
+
+  .differential-card {
+    min-height: auto;
+
+    padding: 26px;
+
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+  }
+}
