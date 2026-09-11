@@ -1,0 +1,174 @@
+.problems {
+  padding: 120px 0;
+
+  border-top: 1px solid var(--border-color);
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(37, 99, 235, 0.08),
+      transparent 32%
+    ),
+    var(--color-background);
+}
+
+.problems__container {
+  width: min(
+    calc(100% - (var(--container-padding) * 2)),
+    var(--container-width)
+  );
+
+  margin: 0 auto;
+}
+
+.problems__header {
+  max-width: 760px;
+
+  margin-bottom: 64px;
+}
+
+.problems__eyebrow {
+  display: inline-block;
+
+  margin-bottom: 20px;
+
+  color: var(--color-cyan);
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.problems__title {
+  max-width: 760px;
+
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-weight: 700;
+
+  letter-spacing: -0.04em;
+}
+
+.problems__intro {
+  max-width: 660px;
+
+  margin-top: 24px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.problems__grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.problem-card {
+  min-height: 260px;
+
+  padding: 28px;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+
+  background: rgba(31, 41, 55, 0.28);
+
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  opacity: 0;
+
+  background: linear-gradient(
+    90deg,
+    var(--color-blue),
+    var(--color-cyan)
+  );
+
+  transition: opacity var(--transition-default);
+}
+
+.problem-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(148, 163, 184, 0.28);
+
+  background: rgba(31, 41, 55, 0.42);
+}
+
+.problem-card:hover::before {
+  opacity: 1;
+}
+
+.problem-card__number {
+  margin-bottom: auto;
+
+  color: var(--color-cyan);
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+}
+
+.problem-card__title {
+  margin-top: 48px;
+
+  color: var(--color-white);
+
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.problem-card__description {
+  margin-top: 14px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 980px) {
+  .problems__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .problems {
+    padding: 88px 0;
+  }
+
+  .problems__header {
+    margin-bottom: 44px;
+  }
+
+  .problems__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-card {
+    min-height: 220px;
+  }
+}
