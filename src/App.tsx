@@ -1,4 +1,6 @@
 import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
+
 import Hero from './sections/Hero/Hero'
 import Problems from './sections/Problems/Problems'
 import Solutions from './sections/Solutions/Solutions'
@@ -23,6 +25,8 @@ function App() {
         <FAQ />
         <Contact />
       </main>
+
+      <Footer />
     </>
   )
 }

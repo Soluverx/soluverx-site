@@ -1,0 +1,144 @@
+.footer {
+  border-top: 1px solid var(--border-color);
+
+  background: #080f23;
+}
+
+.footer__container {
+  width: min(
+    calc(100% - (var(--container-padding) * 2)),
+    var(--container-width)
+  );
+
+  margin: 0 auto;
+}
+
+.footer__top {
+  padding: 72px 0;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 80px;
+}
+
+.footer__brand {
+  max-width: 420px;
+}
+
+.footer__logo {
+  display: inline-block;
+
+  color: var(--color-white);
+
+  font-size: 1.35rem;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.footer__tagline {
+  max-width: 360px;
+
+  margin-top: 18px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.footer__navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+
+  gap: 64px;
+}
+
+.footer__column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 14px;
+}
+
+.footer__label {
+  margin-bottom: 6px;
+
+  color: var(--color-cyan);
+
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer__column a,
+.footer__coming-soon {
+  color: var(--color-text-secondary);
+
+  font-size: 0.92rem;
+}
+
+.footer__column a:hover {
+  color: var(--color-white);
+}
+
+.footer__coming-soon {
+  opacity: 0.7;
+}
+
+.footer__bottom {
+  min-height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  border-top: 1px solid var(--border-color);
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.8rem;
+}
+
+.footer__signature {
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .footer__navigation {
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer__top {
+    padding: 56px 0;
+  }
+
+  .footer__navigation {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer__bottom {
+    padding: 24px 0;
+
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .footer__signature {
+    text-align: left;
+  }
+}
