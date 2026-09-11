@@ -4,6 +4,7 @@ import Problems from './sections/Problems/Problems'
 import Solutions from './sections/Solutions/Solutions'
 import Process from './sections/Process/Process'
 import Differentials from './sections/Differentials/Differentials'
+import About from './sections/About/About'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Solutions />
         <Process />
         <Differentials />
+        <About />
       </main>
     </>
   )
