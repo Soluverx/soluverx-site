@@ -23,20 +23,17 @@
 
 .problems__header {
   max-width: 760px;
-
   margin-bottom: 64px;
 }
 
 .problems__eyebrow {
   display: inline-block;
-
   margin-bottom: 20px;
 
   color: var(--color-cyan);
 
   font-size: 0.8rem;
   font-weight: 600;
-
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -46,13 +43,11 @@
 
   font-size: clamp(2.4rem, 5vw, 4.4rem);
   font-weight: 700;
-
   letter-spacing: -0.04em;
 }
 
 .problems__intro {
   max-width: 660px;
-
   margin-top: 24px;
 
   color: var(--color-text-secondary);
@@ -63,15 +58,12 @@
 
 .problems__grid {
   display: grid;
-
   grid-template-columns: repeat(3, minmax(0, 1fr));
-
   gap: 20px;
 }
 
 .problem-card {
   min-height: 260px;
-
   padding: 28px;
 
   position: relative;
@@ -157,18 +149,38 @@
 
 @media (max-width: 640px) {
   .problems {
-    padding: 88px 0;
+    padding: 72px 0;
   }
 
   .problems__header {
-    margin-bottom: 44px;
+    margin-bottom: 34px;
+  }
+
+  .problems__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .problems__intro {
+    margin-top: 18px;
+    font-size: 0.98rem;
   }
 
   .problems__grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .problem-card {
-    min-height: 220px;
+    min-height: 180px;
+    padding: 22px;
+  }
+
+  .problem-card__title {
+    margin-top: 30px;
+    font-size: 1.2rem;
+  }
+
+  .problem-card__description {
+    margin-top: 10px;
   }
 }
