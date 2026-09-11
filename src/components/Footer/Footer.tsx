@@ -1,3 +1,4 @@
+import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.png'
 import './Footer.css'
 
 function Footer() {
@@ -8,8 +9,16 @@ function Footer() {
       <div className="footer__container">
         <div className="footer__top">
           <div className="footer__brand">
-            <a href="#inicio" className="footer__logo">
-              SOLUVERX
+            <a
+              href="#inicio"
+              className="footer__logo"
+              aria-label="Soluverx - Início"
+            >
+              <img
+                src={soluverxLogo}
+                alt="Soluverx"
+                className="footer__logo-image"
+              />
             </a>
 
             <p className="footer__tagline">

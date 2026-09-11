@@ -1,3 +1,4 @@
+import soluverxSymbol from '../../assets/brand/soluverx-symbol.png'
 import './Hero.css'
 
 function Hero() {
@@ -32,10 +33,11 @@ function Hero() {
         <div className="hero__visual" aria-hidden="true">
           <div className="hero__glow" />
 
-          <div className="hero__x">
-            <span className="hero__x-line hero__x-line--one" />
-            <span className="hero__x-line hero__x-line--two" />
-          </div>
+          <img
+            src={soluverxSymbol}
+            alt=""
+            className="hero__symbol"
+          />
         </div>
       </div>
     </section>

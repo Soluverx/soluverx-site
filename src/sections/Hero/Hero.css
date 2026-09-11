@@ -92,16 +92,19 @@
 
 .hero__primary:hover {
   background: #1d4ed8;
+
   transform: translateY(-2px);
 }
 
 .hero__secondary {
   border: 1px solid var(--border-color);
+
   color: var(--color-white);
 }
 
 .hero__secondary:hover {
   border-color: rgba(255, 255, 255, 0.35);
+
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -118,64 +121,48 @@
 .hero__glow {
   position: absolute;
 
-  width: 360px;
-  height: 360px;
+  width: 420px;
+  height: 420px;
 
   border-radius: 50%;
 
   background: radial-gradient(
     circle,
-    rgba(37, 99, 235, 0.32) 0%,
-    rgba(6, 182, 212, 0.14) 35%,
+    rgba(37, 99, 235, 0.34) 0%,
+    rgba(6, 182, 212, 0.16) 35%,
     transparent 72%
   );
 
-  filter: blur(10px);
+  filter: blur(12px);
+
+  pointer-events: none;
 }
 
-.hero__x {
-  width: 300px;
-  height: 300px;
+.hero__symbol {
+  width: min(100%, 360px);
+  height: auto;
+
+  display: block;
 
   position: relative;
-}
+  z-index: 1;
 
-.hero__x-line {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  object-fit: contain;
 
-  width: 320px;
-  height: 64px;
-
-  border-radius: 18px;
-
-  background: linear-gradient(
-    90deg,
-    var(--color-blue),
-    var(--color-cyan)
-  );
-
-  box-shadow: 0 0 40px rgba(37, 99, 235, 0.18);
-}
-
-.hero__x-line--one {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.hero__x-line--two {
-  transform: translate(-50%, -50%) rotate(-45deg);
+  filter: drop-shadow(0 0 34px rgba(37, 99, 235, 0.2));
 }
 
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
+
     padding-top: 100px;
     padding-bottom: 48px;
   }
 
   .hero__container {
     grid-template-columns: 1fr;
+
     gap: 26px;
   }
 
@@ -184,20 +171,12 @@
   }
 
   .hero__glow {
-    width: 180px;
-    height: 180px;
+    width: 190px;
+    height: 190px;
   }
 
-  .hero__x {
-    width: 150px;
-    height: 150px;
-  }
-
-  .hero__x-line {
+  .hero__symbol {
     width: 160px;
-    height: 34px;
-
-    border-radius: 10px;
   }
 }
 
@@ -228,24 +207,17 @@
   }
 
   .hero__visual {
-    min-height: 150px;
+    min-height: 145px;
+
     margin-top: 4px;
   }
 
   .hero__glow {
-    width: 150px;
-    height: 150px;
+    width: 145px;
+    height: 145px;
   }
 
-  .hero__x {
+  .hero__symbol {
     width: 120px;
-    height: 120px;
-  }
-
-  .hero__x-line {
-    width: 130px;
-    height: 28px;
-
-    border-radius: 9px;
   }
 }
