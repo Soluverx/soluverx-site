@@ -1,12 +1,13 @@
 import Header from './components/Header/Header'
+import Hero from './sections/Hero/Hero'
 
 function App() {
   return (
     <>
       <Header />
 
-      <main id="inicio">
-        <h1>Soluverx</h1>
+      <main>
+        <Hero />
       </main>
     </>
   )
