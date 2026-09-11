@@ -130,21 +130,42 @@
 @media (max-width: 900px) {
   .about__container {
     grid-template-columns: 1fr;
-    gap: 56px;
+    gap: 48px;
   }
 }
 
 @media (max-width: 640px) {
   .about {
-    padding: 88px 0;
+    padding: 72px 0;
+  }
+
+  .about__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .about__text {
+    margin-top: 24px;
+    gap: 16px;
+  }
+
+  .about__text p {
+    font-size: 0.98rem;
   }
 
   .about__panel-item {
     min-height: auto;
 
-    padding: 24px;
+    padding: 22px;
 
-    grid-template-columns: 38px 1fr;
-    gap: 16px;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+  }
+
+  .about__panel-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .about__panel-item p {
+    margin-top: 10px;
   }
 }

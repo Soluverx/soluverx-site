@@ -65,9 +65,7 @@
 
 .solutions__grid {
   display: grid;
-
   grid-template-columns: repeat(3, minmax(0, 1fr));
-
   gap: 20px;
 }
 
@@ -170,6 +168,7 @@
 
 .solution-card:hover .solution-card__arrow {
   color: var(--color-cyan);
+
   transform: translate(3px, -3px);
 }
 
@@ -241,6 +240,7 @@
 
 .solutions__cta:hover {
   background: #1d4ed8;
+
   transform: translateY(-2px);
 }
 
@@ -259,23 +259,47 @@
 
 @media (max-width: 640px) {
   .solutions {
-    padding: 88px 0;
+    padding: 72px 0;
   }
 
   .solutions__header {
-    margin-bottom: 44px;
+    margin-bottom: 34px;
+  }
+
+  .solutions__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .solutions__intro {
+    margin-top: 18px;
+
+    font-size: 0.98rem;
   }
 
   .solutions__grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .solution-card {
-    min-height: 260px;
+    min-height: 210px;
+
+    padding: 22px;
+  }
+
+  .solution-card__title {
+    font-size: 1.2rem;
+  }
+
+  .solution-card__description {
+    margin-top: 10px;
   }
 
   .solutions__footer {
-    padding: 24px;
+    margin-top: 30px;
+
+    padding: 22px;
+    gap: 20px;
   }
 
   .solutions__cta {

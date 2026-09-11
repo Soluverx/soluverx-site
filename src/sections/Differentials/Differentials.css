@@ -83,9 +83,7 @@
 
   background: rgba(31, 41, 55, 0.12);
 
-  transition:
-    background var(--transition-default),
-    transform var(--transition-default);
+  transition: background var(--transition-default);
 }
 
 .differential-card:hover {
@@ -131,19 +129,37 @@
 
 @media (max-width: 640px) {
   .differentials {
-    padding: 88px 0;
+    padding: 72px 0;
   }
 
   .differentials__header {
-    margin-bottom: 44px;
+    margin-bottom: 34px;
+  }
+
+  .differentials__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .differentials__intro {
+    margin-top: 18px;
+
+    font-size: 0.98rem;
   }
 
   .differential-card {
     min-height: auto;
 
-    padding: 26px;
+    padding: 22px;
 
-    grid-template-columns: 40px 1fr;
-    gap: 16px;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+  }
+
+  .differential-card__title {
+    font-size: 1.15rem;
+  }
+
+  .differential-card__description {
+    margin-top: 10px;
   }
 }

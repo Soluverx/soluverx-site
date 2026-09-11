@@ -121,16 +121,30 @@
 
 @media (max-width: 600px) {
   .footer__top {
-    padding: 56px 0;
+    padding: 52px 0;
+
+    gap: 36px;
+  }
+
+  .footer__tagline {
+    margin-top: 14px;
+
+    font-size: 0.95rem;
   }
 
   .footer__navigation {
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 28px;
+  }
+
+  .footer__column {
+    gap: 12px;
   }
 
   .footer__bottom {
-    padding: 24px 0;
+    min-height: auto;
+
+    padding: 22px 0;
 
     align-items: flex-start;
     flex-direction: column;
