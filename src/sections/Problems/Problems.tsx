@@ -26,6 +26,11 @@ const problems = [
     description:
       'Nem sempre uma solução pronta acompanha a forma como cada negócio realmente funciona.',
   },
+  {
+    title: 'Dificuldade para escalar',
+    description:
+      'Processos que funcionam no início podem se tornar lentos, confusos e difíceis de manter conforme o negócio cresce.',
+  },
 ]
 
 function Problems() {
