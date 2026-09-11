@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.png'
 import './Header.css'
 
 function Header() {
@@ -36,8 +37,13 @@ function Header() {
             href="#inicio"
             className="header__logo"
             onClick={closeMenu}
+            aria-label="Soluverx - Início"
           >
-            SOLUVERX
+            <img
+              src={soluverxLogo}
+              alt="Soluverx"
+              className="header__logo-image"
+            />
           </a>
 
           <nav

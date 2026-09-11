@@ -35,14 +35,19 @@
   position: relative;
   z-index: 102;
 
+  display: flex;
+  align-items: center;
+
   flex-shrink: 0;
+}
 
-  color: var(--color-white);
+.header__logo-image {
+  display: block;
 
-  font-size: 1.25rem;
-  font-weight: 700;
+  width: 150px;
+  height: auto;
 
-  letter-spacing: 0.12em;
+  object-fit: contain;
 }
 
 .header__nav {
@@ -104,6 +109,10 @@
 
   font-size: 0.9rem;
   font-weight: 600;
+
+  transition:
+    background var(--transition-default),
+    transform var(--transition-default);
 }
 
 .header__cta:hover {
@@ -172,6 +181,10 @@
 @media (max-width: 900px) {
   .header__container {
     height: 68px;
+  }
+
+  .header__logo-image {
+    width: 135px;
   }
 
   .header__cta {
@@ -283,7 +296,7 @@
 }
 
 @media (max-width: 480px) {
-  .header__logo {
-    font-size: 1.1rem;
+  .header__logo-image {
+    width: 120px;
   }
 }
