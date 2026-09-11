@@ -5,12 +5,16 @@ function Contact() {
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
 
   return (
-    <section className="contact" id="contato">
+    <section
+      className="contact"
+      id="contato"
+      aria-labelledby="contact-title"
+    >
       <div className="contact__container">
         <div className="contact__content">
           <span className="contact__eyebrow">Contato</span>
 
-          <h2 className="contact__title">
+          <h2 className="contact__title" id="contact-title">
             Conte o que você precisa resolver.
           </h2>
 
@@ -35,7 +39,10 @@ function Contact() {
           </div>
         </div>
 
-        <form className="contact__form">
+        <form
+          className="contact__form"
+          aria-label="Formulário de contato"
+        >
           <div className="contact__field">
             <label htmlFor="name">Nome</label>
 
@@ -44,6 +51,7 @@ function Contact() {
               name="name"
               type="text"
               placeholder="Seu nome"
+              autoComplete="name"
               required
             />
           </div>
@@ -56,6 +64,7 @@ function Contact() {
               name="company"
               type="text"
               placeholder="Nome da empresa"
+              autoComplete="organization"
             />
           </div>
 
@@ -68,6 +77,7 @@ function Contact() {
                 name="email"
                 type="email"
                 placeholder="voce@empresa.com"
+                autoComplete="email"
                 required
               />
             </div>
@@ -80,6 +90,7 @@ function Contact() {
                 name="whatsapp"
                 type="tel"
                 placeholder="(00) 00000-0000"
+                autoComplete="tel"
               />
             </div>
           </div>
