@@ -6,6 +6,7 @@ import Process from './sections/Process/Process'
 import Differentials from './sections/Differentials/Differentials'
 import About from './sections/About/About'
 import FAQ from './sections/FAQ/FAQ'
+import Contact from './sections/Contact/Contact'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Differentials />
         <About />
         <FAQ />
+        <Contact />
       </main>
     </>
   )
