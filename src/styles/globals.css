@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 html {
   background: var(--color-background);
+
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
 }
 
 body {
   min-height: 100vh;
+
+  overflow-x: hidden;
+
   background: var(--color-background);
+
   color: var(--color-text-primary);
 
   font-family:
@@ -48,5 +56,12 @@ a {
 
 ::selection {
   background: var(--color-blue);
+
   color: var(--color-white);
+}
+
+@media (max-width: 900px) {
+  html {
+    scroll-padding-top: 68px;
+  }
 }
