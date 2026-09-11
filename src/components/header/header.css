@@ -7,6 +7,7 @@
   z-index: 100;
 
   background: rgba(11, 19, 43, 0.88);
+
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
@@ -20,11 +21,13 @@
   );
 
   height: 76px;
+
   margin: 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 32px;
 }
 
@@ -45,6 +48,7 @@
 .header__nav {
   display: flex;
   align-items: center;
+
   gap: 32px;
 
   color: var(--color-text-secondary);
@@ -52,8 +56,34 @@
   font-size: 0.95rem;
 }
 
+.header__nav a {
+  position: relative;
+}
+
+.header__nav a:not(.header__mobile-cta)::after {
+  content: '';
+
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+
+  width: 100%;
+  height: 1px;
+
+  background: var(--color-cyan);
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform var(--transition-default);
+}
+
 .header__nav a:hover {
   color: var(--color-white);
+}
+
+.header__nav a:not(.header__mobile-cta):hover::after {
+  transform: scaleX(1);
 }
 
 .header__cta {
@@ -67,19 +97,19 @@
 
   flex-shrink: 0;
 
+  border-radius: var(--border-radius-sm);
+
   background: var(--color-blue);
   color: var(--color-white);
-
-  border-radius: var(--border-radius-sm);
 
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .header__cta:hover {
-  transform: translateY(-1px);
-
   background: #1d4ed8;
+
+  transform: translateY(-1px);
 }
 
 .header__mobile-cta {
@@ -133,6 +163,10 @@
 
 .header__menu-button--open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
+}
+
+.header__overlay {
+  display: none;
 }
 
 @media (max-width: 900px) {
@@ -201,6 +235,10 @@
     font-size: 1rem;
   }
 
+  .header__nav a::after {
+    display: none;
+  }
+
   .header__nav > a:hover {
     color: var(--color-white);
   }
@@ -223,6 +261,24 @@
     color: var(--color-white) !important;
 
     font-weight: 600;
+  }
+
+  .header__overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 90;
+
+    display: block;
+
+    border: 0;
+
+    background: rgba(0, 0, 0, 0.48);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+
+    cursor: default;
   }
 }
 
