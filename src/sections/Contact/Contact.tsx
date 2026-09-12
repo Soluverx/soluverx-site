@@ -1,620 +1,358 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type SyntheticEvent,
-} from 'react'
-
-import {
-  useForm,
-  ValidationError,
-} from '@formspree/react'
-
+import { useEffect, useMemo, useRef, useState, type SyntheticEvent } from 'react'
+import { useForm, ValidationError } from '@formspree/react'
 import './Contact.css'
 
-type FormErrors = {
+type FieldErrors = {
   name?: string
   company?: string
-  email?: string
   whatsapp?: string
+  email?: string
   message?: string
 }
 
-declare global {
-  interface Window {
+const whatsappUrl =
+  'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
+
+function trackFormSuccess() {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const globalWindow = window as typeof window & {
     gtag?: (...args: unknown[]) => void
   }
+
+  globalWindow.gtag?.('event', 'form_submit_success')
+}
+
+function isValidEmail(value: string) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+  return emailPattern.test(value)
+}
+
+function getPhoneDigits(value: string) {
+  return value.replace(/\D/g, '')
+}
+
+function isValidWhatsApp(value: string) {
+  const digits = getPhoneDigits(value)
+
+  if (digits.length < 10 || digits.length > 13) {
+    return false
+  }
+
+  if (/^(\d)\1+$/.test(digits)) {
+    return false
+  }
+
+  return true
 }
 
 function Contact() {
-  const [state, handleFormspreeSubmit] =
-    useForm('mwlkzzvr')
-
-  const [errors, setErrors] =
-    useState<FormErrors>({})
-
-  const formSuccessTracked = useRef(false)
-
-  const whatsappUrl =
-    'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
+  const [state, handleSubmit] = useForm('mwlkzzvr')
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const trackedSuccessRef = useRef(false)
 
   useEffect(() => {
-    if (
-      !state.succeeded ||
-      formSuccessTracked.current
-    ) {
-      return
+    if (state.succeeded && !trackedSuccessRef.current) {
+      trackFormSuccess()
+      trackedSuccessRef.current = true
     }
-
-    formSuccessTracked.current = true
-
-    window.gtag?.(
-      'event',
-      'form_submit_success',
-      {
-        event_category: 'lead',
-        event_label: 'Formulário de contato',
-      },
-    )
   }, [state.succeeded])
 
-  function validateName(value: string) {
-    const name = value.trim()
+  const statusText = useMemo(() => {
+    if (state.submitting) {
+      return 'Enviando...'
+    }
+
+    return 'Enviar mensagem'
+  }, [state.submitting])
+
+  function validate(form: HTMLFormElement) {
+    const data = new FormData(form)
+
+    const name = String(data.get('name') ?? '').trim()
+    const company = String(data.get('company') ?? '').trim()
+    const whatsapp = String(data.get('whatsapp') ?? '').trim()
+    const email = String(data.get('email') ?? '').trim()
+    const message = String(data.get('message') ?? '').trim()
+
+    const errors: FieldErrors = {}
 
     if (!name) {
-      return 'Informe seu nome.'
+      errors.name = 'Informe seu nome.'
+    } else if (name.length < 2) {
+      errors.name = 'Seu nome precisa ter pelo menos 2 caracteres.'
     }
 
-    if (name.length < 2) {
-      return 'Digite um nome válido.'
+    if (company && company.length < 2) {
+      errors.company = 'Informe um nome de empresa válido.'
     }
 
-    if (!/[A-Za-zÀ-ÿ]/.test(name)) {
-      return 'O nome precisa conter letras.'
+    if (!whatsapp) {
+      errors.whatsapp = 'Informe seu WhatsApp.'
+    } else if (!isValidWhatsApp(whatsapp)) {
+      errors.whatsapp = 'Digite um WhatsApp válido com DDD.'
     }
 
-    if (!/^[A-Za-zÀ-ÿ' -]+$/.test(name)) {
-      return 'Use apenas letras, espaços, hífen ou apóstrofo.'
+    if (email && !isValidEmail(email)) {
+      errors.email = 'Digite um email válido.'
     }
-
-    return ''
-  }
-
-  function validateCompany(value: string) {
-    const company = value.trim()
-
-    if (!company) {
-      return ''
-    }
-
-    if (company.length < 2) {
-      return 'Digite um nome de empresa válido.'
-    }
-
-    if (!/[A-Za-zÀ-ÿ0-9]/.test(company)) {
-      return 'Digite um nome de empresa válido.'
-    }
-
-    return ''
-  }
-
-  function validateEmail(value: string) {
-    const email = value.trim()
-
-    if (!email) {
-      return 'Informe seu e-mail.'
-    }
-
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-
-    if (!emailRegex.test(email)) {
-      return 'Digite um e-mail válido.'
-    }
-
-    return ''
-  }
-
-  function validateWhatsapp(value: string) {
-    const digits = value.replace(/\D/g, '')
-
-    if (!digits) {
-      return 'Informe seu WhatsApp.'
-    }
-
-    if (
-      digits.length !== 10 &&
-      digits.length !== 11
-    ) {
-      return 'Informe DDD + número com 10 ou 11 dígitos.'
-    }
-
-    const ddd = digits.slice(0, 2)
-
-    if (ddd === '00') {
-      return 'Informe um DDD válido.'
-    }
-
-    if (/^(\d)\1+$/.test(digits)) {
-      return 'Digite um número de WhatsApp válido.'
-    }
-
-    return ''
-  }
-
-  function validateMessage(value: string) {
-    const message = value.trim()
 
     if (!message) {
-      return 'Conte brevemente o que você precisa resolver.'
+      errors.message = 'Conte o que está dando trabalho.'
+    } else if (message.length < 20) {
+      errors.message =
+        'Conte um pouco mais sobre o problema. Use pelo menos 20 caracteres.'
     }
 
-    if (message.length < 20) {
-      return 'Escreva pelo menos 20 caracteres.'
-    }
+    setFieldErrors(errors)
 
-    return ''
+    return Object.keys(errors).length === 0
   }
 
-  function formatWhatsapp(value: string) {
-    const digits = value
-      .replace(/\D/g, '')
-      .slice(0, 11)
-
-    if (digits.length <= 2) {
-      return digits
-    }
-
-    if (digits.length <= 6) {
-      return `(${digits.slice(0, 2)}) ${digits.slice(2)}`
-    }
-
-    if (digits.length <= 10) {
-      return `(${digits.slice(0, 2)}) ${digits.slice(
-        2,
-        6,
-      )}-${digits.slice(6)}`
-    }
-
-    return `(${digits.slice(0, 2)}) ${digits.slice(
-      2,
-      7,
-    )}-${digits.slice(7)}`
-  }
-
-  function validateForm(
-    form: HTMLFormElement,
-  ) {
-    const formData = new FormData(form)
-
-    const name = String(
-      formData.get('name') || '',
-    )
-
-    const company = String(
-      formData.get('company') || '',
-    )
-
-    const email = String(
-      formData.get('email') || '',
-    )
-
-    const whatsapp = String(
-      formData.get('whatsapp') || '',
-    )
-
-    const message = String(
-      formData.get('message') || '',
-    )
-
-    const newErrors: FormErrors = {
-      name: validateName(name),
-      company: validateCompany(company),
-      email: validateEmail(email),
-      whatsapp: validateWhatsapp(whatsapp),
-      message: validateMessage(message),
-    }
-
-    Object.keys(newErrors).forEach((key) => {
-      const typedKey =
-        key as keyof FormErrors
-
-      if (!newErrors[typedKey]) {
-        delete newErrors[typedKey]
-      }
-    })
-
-    setErrors(newErrors)
-
-    return (
-      Object.keys(newErrors).length === 0
-    )
-  }
-
-  async function handleSubmit(
-    event: SyntheticEvent<HTMLFormElement>,
-  ) {
+  async function onSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const form = event.currentTarget
 
-    if (!validateForm(form)) {
-      requestAnimationFrame(() => {
-        const firstInvalid =
-          form.querySelector(
-            '[aria-invalid="true"]',
-          ) as HTMLElement | null
-
-        firstInvalid?.focus()
-      })
-
+    if (!validate(form)) {
       return
     }
 
-    await handleFormspreeSubmit(event)
+    setFieldErrors({})
+    setSubmitError(null)
+
+    try {
+      await handleSubmit(new FormData(form))
+    } catch {
+      setSubmitError(
+        'Não foi possível enviar a mensagem agora. Tente novamente ou fale pelo WhatsApp.',
+      )
+    }
   }
 
   return (
-    <section
-      className="contact"
-      id="contato"
-      aria-labelledby="contact-title"
-    >
+    <section className="contact" id="contato">
       <div className="contact__container">
-        <div className="contact__content">
-          <span className="contact__eyebrow">
-            Contato
-          </span>
+        <div className="contact__intro" data-reveal="left">
+          <span className="contact__eyebrow">Vamos conversar</span>
 
-          <h2
-            className="contact__title"
-            id="contact-title"
-          >
-            Conte o que você precisa resolver.
+          <h2 className="contact__title">
+            Conte o que está dando trabalho.
           </h2>
 
-          <p className="contact__intro">
-            Explique sua necessidade, dificuldade ou
-            ideia. A partir disso, analisamos o
-            cenário e avaliamos a melhor forma de
-            ajudar.
+          <p className="contact__lead">
+            Você não precisa chegar com a solução pronta. Explique o problema,
+            a tarefa ou o processo que quer melhorar e começamos por aí.
           </p>
 
-          <div className="contact__direct">
-            <span className="contact__direct-label">
-              Prefere falar direto?
-            </span>
+          <div className="contact__channels">
+            <div className="contact__channel">
+              <span className="contact__channel-label">Email</span>
+              <a href="mailto:soluverx@gmail.com">soluverx@gmail.com</a>
+            </div>
 
-            <a
-              className="contact__whatsapp"
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Falar pelo WhatsApp
-            </a>
+            <div className="contact__channel">
+              <span className="contact__channel-label">WhatsApp</span>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Falar pelo WhatsApp
+              </a>
+            </div>
           </div>
         </div>
 
-        <form
-          className="contact__form"
-          aria-label="Formulário de contato"
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <div className="contact__field">
-            <label htmlFor="name">
-              Nome{' '}
-              <span aria-hidden="true">
-                *
+        <div className="contact__form-wrap" data-reveal="right" data-reveal-delay="1">
+          {state.succeeded ? (
+            <div className="contact__success" role="status">
+              <span className="contact__success-icon" aria-hidden="true">
+                ✓
               </span>
-            </label>
 
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Seu nome"
-              autoComplete="name"
-              minLength={2}
-              maxLength={80}
-              aria-invalid={Boolean(
-                errors.name,
-              )}
-              aria-describedby={
-                errors.name
-                  ? 'name-error'
-                  : undefined
-              }
-              onBlur={(event) => {
-                const error =
-                  validateName(
-                    event.target.value,
-                  )
+              <span className="contact__success-kicker">Mensagem enviada</span>
 
-                setErrors((current) => ({
-                  ...current,
-                  name:
-                    error || undefined,
-                }))
-              }}
-              required
-            />
+              <h3>Recebi seu contato.</h3>
 
-            {errors.name && (
-              <span
-                className="contact__error"
-                id="name-error"
-                role="alert"
-              >
-                {errors.name}
-              </span>
-            )}
-          </div>
-
-          <div className="contact__field">
-            <label htmlFor="company">
-              Empresa ou negócio
-            </label>
-
-            <input
-              id="company"
-              name="company"
-              type="text"
-              placeholder="Nome da empresa"
-              autoComplete="organization"
-              maxLength={120}
-              aria-invalid={Boolean(
-                errors.company,
-              )}
-              aria-describedby={
-                errors.company
-                  ? 'company-error'
-                  : undefined
-              }
-              onBlur={(event) => {
-                const error =
-                  validateCompany(
-                    event.target.value,
-                  )
-
-                setErrors((current) => ({
-                  ...current,
-                  company:
-                    error || undefined,
-                }))
-              }}
-            />
-
-            {errors.company && (
-              <span
-                className="contact__error"
-                id="company-error"
-                role="alert"
-              >
-                {errors.company}
-              </span>
-            )}
-          </div>
-
-          <div className="contact__row">
-            <div className="contact__field">
-              <label htmlFor="email">
-                E-mail{' '}
-                <span aria-hidden="true">
-                  *
-                </span>
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="voce@empresa.com"
-                autoComplete="email"
-                inputMode="email"
-                maxLength={150}
-                aria-invalid={Boolean(
-                  errors.email,
-                )}
-                aria-describedby={
-                  errors.email
-                    ? 'email-error'
-                    : undefined
-                }
-                onBlur={(event) => {
-                  const error =
-                    validateEmail(
-                      event.target.value,
-                    )
-
-                  setErrors((current) => ({
-                    ...current,
-                    email:
-                      error || undefined,
-                  }))
-                }}
-                required
-              />
-
-              {errors.email && (
-                <span
-                  className="contact__error"
-                  id="email-error"
-                  role="alert"
-                >
-                  {errors.email}
-                </span>
-              )}
-
-              <ValidationError
-                prefix="E-mail"
-                field="email"
-                errors={state.errors}
-              />
+              <p>
+                Vou ler o que você enviou e retornar pelo WhatsApp informado.
+              </p>
             </div>
+          ) : (
+            <form className="contact__form" onSubmit={onSubmit} noValidate>
+              <div className="contact__form-head">
+                <span>Primeiro contato</span>
+                <p>Preencha só o necessário para começarmos.</p>
+              </div>
 
-            <div className="contact__field">
-              <label htmlFor="whatsapp">
-                WhatsApp{' '}
-                <span aria-hidden="true">
-                  *
-                </span>
-              </label>
+              <div className="contact__row">
+                <div className="contact__field">
+                  <label htmlFor="contact-name">
+                    Seu nome <span className="contact__required">*</span>
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="Como podemos te chamar?"
+                    aria-invalid={Boolean(fieldErrors.name)}
+                    aria-describedby={
+                      fieldErrors.name ? 'contact-name-error' : undefined
+                    }
+                  />
+                  {fieldErrors.name && (
+                    <span
+                      className="contact__field-error"
+                      id="contact-name-error"
+                      role="alert"
+                    >
+                      {fieldErrors.name}
+                    </span>
+                  )}
+                </div>
 
-              <input
-                id="whatsapp"
-                name="whatsapp"
-                type="tel"
-                placeholder="(00) 00000-0000"
-                autoComplete="tel"
-                inputMode="numeric"
-                maxLength={15}
-                aria-invalid={Boolean(
-                  errors.whatsapp,
-                )}
-                aria-describedby={
-                  errors.whatsapp
-                    ? 'whatsapp-error'
-                    : undefined
-                }
-                onChange={(event) => {
-                  event.target.value =
-                    formatWhatsapp(
-                      event.target.value,
-                    )
+                <div className="contact__field">
+                  <label htmlFor="contact-company">
+                    Empresa <span>(opcional)</span>
+                  </label>
+                  <input
+                    id="contact-company"
+                    name="company"
+                    type="text"
+                    autoComplete="organization"
+                    placeholder="Nome da empresa"
+                    aria-invalid={Boolean(fieldErrors.company)}
+                    aria-describedby={
+                      fieldErrors.company ? 'contact-company-error' : undefined
+                    }
+                  />
+                  {fieldErrors.company && (
+                    <span
+                      className="contact__field-error"
+                      id="contact-company-error"
+                      role="alert"
+                    >
+                      {fieldErrors.company}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-                  if (
-                    errors.whatsapp
-                  ) {
-                    const error =
-                      validateWhatsapp(
-                        event.target.value,
-                      )
+              <div className="contact__row">
+                <div className="contact__field">
+                  <label htmlFor="contact-whatsapp">
+                    WhatsApp <span className="contact__required">*</span>
+                  </label>
+                  <input
+                    id="contact-whatsapp"
+                    name="whatsapp"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="(33) 99999-9999"
+                    aria-invalid={Boolean(fieldErrors.whatsapp)}
+                    aria-describedby={
+                      fieldErrors.whatsapp ? 'contact-whatsapp-error' : undefined
+                    }
+                  />
+                  {fieldErrors.whatsapp && (
+                    <span
+                      className="contact__field-error"
+                      id="contact-whatsapp-error"
+                      role="alert"
+                    >
+                      {fieldErrors.whatsapp}
+                    </span>
+                  )}
+                </div>
 
-                    setErrors(
-                      (current) => ({
-                        ...current,
-                        whatsapp:
-                          error ||
-                          undefined,
-                      }),
-                    )
+                <div className="contact__field">
+                  <label htmlFor="contact-email">
+                    Email <span>(opcional)</span>
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="seuemail@empresa.com"
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={
+                      fieldErrors.email ? 'contact-email-error' : undefined
+                    }
+                  />
+                  {fieldErrors.email && (
+                    <span
+                      className="contact__field-error"
+                      id="contact-email-error"
+                      role="alert"
+                    >
+                      {fieldErrors.email}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="contact__field">
+                <label htmlFor="contact-message">
+                  O que está dando trabalho?{' '}
+                  <span className="contact__required">*</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={6}
+                  placeholder="Pode explicar do seu jeito. O que acontece hoje e o que você gostaria que fosse mais simples?"
+                  aria-invalid={Boolean(fieldErrors.message)}
+                  aria-describedby={
+                    fieldErrors.message ? 'contact-message-error' : undefined
                   }
-                }}
-                onBlur={(event) => {
-                  const error =
-                    validateWhatsapp(
-                      event.target.value,
-                    )
+                />
+                {fieldErrors.message && (
+                  <span
+                    className="contact__field-error"
+                    id="contact-message-error"
+                    role="alert"
+                  >
+                    {fieldErrors.message}
+                  </span>
+                )}
+              </div>
 
-                  setErrors((current) => ({
-                    ...current,
-                    whatsapp:
-                      error || undefined,
-                  }))
-                }}
-                required
-              />
-
-              {errors.whatsapp && (
-                <span
-                  className="contact__error"
-                  id="whatsapp-error"
-                  role="alert"
-                >
-                  {errors.whatsapp}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="contact__field">
-            <label htmlFor="message">
-              O que você precisa resolver?{' '}
-              <span aria-hidden="true">
-                *
-              </span>
-            </label>
-
-            <textarea
-              id="message"
-              name="message"
-              rows={6}
-              placeholder="Conte um pouco sobre o problema, processo ou ideia..."
-              minLength={20}
-              maxLength={2000}
-              aria-invalid={Boolean(
-                errors.message,
-              )}
-              aria-describedby={
-                errors.message
-                  ? 'message-error'
-                  : undefined
-              }
-              onBlur={(event) => {
-                const error =
-                  validateMessage(
-                    event.target.value,
-                  )
-
-                setErrors((current) => ({
-                  ...current,
-                  message:
-                    error || undefined,
-                }))
-              }}
-              required
-            />
-
-            {errors.message && (
-              <span
-                className="contact__error"
-                id="message-error"
-                role="alert"
-              >
-                {errors.message}
-              </span>
-            )}
-
-            <ValidationError
-              prefix="Mensagem"
-              field="message"
-              errors={state.errors}
-            />
-          </div>
-
-          <p className="contact__required-note">
-            * Campos obrigatórios
-          </p>
-
-          <button
-            className="contact__submit"
-            type="submit"
-            disabled={state.submitting}
-          >
-            {state.submitting
-              ? 'Enviando...'
-              : 'Enviar mensagem'}
-          </button>
-
-          {state.succeeded && (
-            <p
-              className="contact__success"
-              role="status"
-            >
-              Mensagem enviada com sucesso. Em
-              breve entraremos em contato.
-            </p>
-          )}
-
-          {!state.succeeded &&
-            state.errors && (
               <ValidationError
+                className="contact__formspree-error"
+                prefix="Formulário"
+                field="form"
                 errors={state.errors}
               />
-            )}
-        </form>
+
+              {submitError && (
+                <p className="contact__submit-error" role="alert">
+                  {submitError}
+                </p>
+              )}
+
+              <div className="contact__form-footer">
+                <button
+                  className="contact__submit"
+                  type="submit"
+                  disabled={state.submitting}
+                >
+                  <span>{statusText}</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+
+                <p>Responderemos pelo WhatsApp informado.</p>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
     </section>
   )

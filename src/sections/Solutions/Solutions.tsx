@@ -1,189 +1,235 @@
+import { useState, type ReactNode } from 'react'
 import './Solutions.css'
 
-const solutions = [
+type SolutionId =
+  | 'custom'
+  | 'dashboard'
+  | 'automation'
+  | 'integration'
+  | 'internal'
+  | 'mvp'
+
+type Solution = {
+  id: SolutionId
+  title: string
+  description: string
+  when: string
+  outcome: string
+  icon: ReactNode
+}
+
+const solutions: Solution[] = [
   {
+    id: 'custom',
     title: 'Sistemas sob medida',
     description:
-      'Soluções desenvolvidas a partir da necessidade real do negócio, sem depender de processos engessados.',
-    icon: 'system',
+      'Quando sua operação precisa de uma ferramenta própria, criada em torno do jeito que o negócio realmente funciona.',
+    when:
+      'O processo é específico demais para ferramentas genéricas, exige adaptações constantes ou acabou virando uma mistura de planilhas, mensagens e controles paralelos.',
+    outcome:
+      'Uma ferramenta construída em torno do fluxo real da operação, com apenas o que faz sentido para aquele contexto.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 5.5h16v13H4z" />
+        <path d="M4 9h16" />
+        <path d="M8 13h3M8 16h6" />
+      </svg>
+    ),
   },
   {
+    id: 'dashboard',
     title: 'Dashboards',
     description:
-      'Painéis claros para acompanhar indicadores, dados importantes e o que está acontecendo no negócio.',
-    icon: 'dashboard',
+      'Quando os dados existem, mas você precisa enxergar tudo com mais clareza em um só lugar.',
+    when:
+      'As informações estão em relatórios, planilhas ou sistemas diferentes e alguém precisa juntar tudo para entender o que está acontecendo.',
+    outcome:
+      'Uma visão centralizada dos indicadores mais importantes, organizada para facilitar acompanhamento e tomada de decisão.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 19V9M12 19V5M19 19v-7" />
+        <path d="M3.5 19.5h17" />
+      </svg>
+    ),
   },
   {
+    id: 'automation',
     title: 'Automações',
     description:
-      'Redução de tarefas repetitivas por meio de fluxos automatizados e processos mais eficientes.',
-    icon: 'automation',
+      'Quando tarefas repetitivas poderiam acontecer com menos trabalho manual.',
+    when:
+      'Alguém precisa repetir todos os dias uma sequência de ações previsíveis, copiar informações, conferir dados ou executar tarefas que seguem sempre a mesma lógica.',
+    outcome:
+      'Parte desse trabalho pode passar a acontecer automaticamente, reduzindo etapas manuais e liberando tempo para atividades mais importantes.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
+        <circle cx="12" cy="12" r="4.2" />
+        <path d="M6 6l2.1 2.1M15.9 15.9 18 18M18 6l-2.1 2.1M8.1 15.9 6 18" />
+      </svg>
+    ),
   },
   {
+    id: 'integration',
     title: 'Integrações',
     description:
-      'Conexão entre sistemas, ferramentas e fontes de dados que hoje funcionam de forma separada.',
-    icon: 'integration',
+      'Quando duas ferramentas precisam trocar informações sem depender de copiar e colar.',
+    when:
+      'Os dados já existem, mas ficam presos em sistemas diferentes e alguém precisa transferir, conferir ou atualizar essas informações manualmente.',
+    outcome:
+      'As ferramentas podem trocar dados entre si de forma mais organizada, reduzindo retrabalho e diminuindo a dependência de processos manuais.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7.5 7.5h-3v9h3M16.5 7.5h3v9h-3" />
+        <path d="M8.5 9.2 11.3 12 8.5 14.8M15.5 9.2 12.7 12l2.8 2.8" />
+      </svg>
+    ),
   },
   {
+    id: 'internal',
     title: 'Ferramentas internas',
     description:
-      'Aplicações criadas para organizar operações, controles, equipes e rotinas específicas.',
-    icon: 'internal',
+      'Quando a equipe precisa de um jeito mais simples de organizar processos, consultas ou controles.',
+    when:
+      'Uma rotina interna depende de controles improvisados, formulários espalhados, consultas demoradas ou informações que só algumas pessoas sabem encontrar.',
+    outcome:
+      'Uma ferramenta focada naquela rotina específica pode centralizar o processo e tornar o trabalho mais simples para quem usa todos os dias.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 5h14v14H5z" />
+        <path d="M8 9h8M8 12h5M8 15h7" />
+      </svg>
+    ),
   },
   {
+    id: 'mvp',
     title: 'MVPs',
     description:
-      'Versões iniciais de produtos digitais para validar ideias com estrutura, clareza e menor risco.',
-    icon: 'mvp',
+      'Quando existe uma ideia e você quer validar uma primeira versão antes de investir em algo maior.',
+    when:
+      'Existe uma ideia de produto, serviço ou ferramenta, mas ainda não faz sentido começar construindo uma solução completa sem antes testar a proposta.',
+    outcome:
+      'Uma primeira versão funcional pode concentrar o essencial para validar a ideia, aprender com o uso e decidir os próximos passos com mais informação.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4 5.5 7.5v9L12 20l6.5-3.5v-9z" />
+        <path d="m5.5 7.5 6.5 3.6 6.5-3.6M12 11.1V20" />
+      </svg>
+    ),
   },
 ]
 
-function SolutionIcon({ type }: { type: string }) {
-  const commonProps = {
-    viewBox: '0 0 48 48',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.8,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true,
-  }
-
-  switch (type) {
-    case 'system':
-      return (
-        <svg {...commonProps}>
-          <rect x="9" y="9" width="30" height="10" rx="3" />
-          <rect x="9" y="29" width="30" height="10" rx="3" />
-          <path d="M15 14h1" />
-          <path d="M20 14h1" />
-          <path d="M34 14h1" />
-          <path d="M15 34h1" />
-          <path d="M20 34h1" />
-          <path d="M34 34h1" />
-        </svg>
-      )
-
-    case 'dashboard':
-      return (
-        <svg {...commonProps}>
-          <path d="M10 37V24" />
-          <path d="M19 37V17" />
-          <path d="M28 37V27" />
-          <path d="M37 37V10" />
-          <path d="M8 39h32" />
-        </svg>
-      )
-
-    case 'automation':
-      return (
-        <svg {...commonProps}>
-          <circle cx="24" cy="24" r="6" />
-          <path d="M24 8v5" />
-          <path d="M24 35v5" />
-          <path d="M8 24h5" />
-          <path d="M35 24h5" />
-          <path d="M13 13l4 4" />
-          <path d="M31 31l4 4" />
-          <path d="M35 13l-4 4" />
-          <path d="M17 31l-4 4" />
-          <path d="M26 17l-5 8h6l-5 8" />
-        </svg>
-      )
-
-    case 'integration':
-      return (
-        <svg {...commonProps}>
-          <path d="M20 17l-5-5a7 7 0 0 0-10 10l7 7a7 7 0 0 0 10 0l3-3" />
-          <path d="M28 31l5 5a7 7 0 0 0 10-10l-7-7a7 7 0 0 0-10 0l-3 3" />
-          <path d="M18 30l12-12" />
-        </svg>
-      )
-
-    case 'internal':
-      return (
-        <svg {...commonProps}>
-          <rect x="8" y="8" width="14" height="14" rx="3" />
-          <rect x="26" y="8" width="14" height="14" rx="3" />
-          <rect x="8" y="26" width="14" height="14" rx="3" />
-          <rect x="26" y="26" width="14" height="14" rx="3" />
-        </svg>
-      )
-
-    case 'mvp':
-      return (
-        <svg {...commonProps}>
-          <path d="M28 8c6 2 10 6 12 12L27 33l-12-12L28 8Z" />
-          <path d="M17 19l-7 2-4 7 11 1" />
-          <path d="M29 31l-1 11 7-4 2-7" />
-          <circle cx="30" cy="18" r="3" />
-        </svg>
-      )
-
-    default:
-      return null
-  }
-}
-
 function Solutions() {
+  const [openId, setOpenId] = useState<SolutionId | null>(null)
+
+  function toggleSolution(id: SolutionId) {
+    setOpenId((current) => (current === id ? null : id))
+  }
+
   return (
     <section className="solutions" id="solucoes">
       <div className="solutions__container">
-        <div className="solutions__header">
-          <span className="solutions__eyebrow">
-            Soluções
-          </span>
+        <div className="solutions__header" data-reveal="up">
+          <div className="solutions__heading">
+            <span className="solutions__eyebrow">
+              Soluções que se adaptam ao problema
+            </span>
 
-          <h2 className="solutions__title">
-            Quando o problema é específico, a solução também pode ser.
-          </h2>
+            <h2 className="solutions__title">
+              A solução certa depende do que está dando trabalho hoje.
+            </h2>
+          </div>
 
           <p className="solutions__intro">
-            Desenvolvemos soluções digitais pensadas para a realidade de cada
-            projeto, buscando simplificar processos, organizar informações e
-            gerar mais clareza para o negócio.
+            Nem todo problema precisa do mesmo tipo de software. Dependendo da
+            necessidade, a solução pode ser pequena e pontual ou evoluir para
+            algo mais completo.
           </p>
         </div>
 
-        <div className="solutions__grid">
-          {solutions.map((solution, index) => (
-            <article
-              className="solution-card"
-              key={solution.title}
-            >
-              <div className="solution-card__top">
-                <span className="solution-card__number">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+        <div className="solutions__grid" data-reveal-stagger>
+          {solutions.map((solution) => {
+            const isOpen = openId === solution.id
+            const panelId = `solution-panel-${solution.id}`
+            const buttonId = `solution-button-${solution.id}`
 
-                <span className="solution-card__icon">
-                  <SolutionIcon type={solution.icon} />
-                </span>
-              </div>
+            return (
+              <article
+                className={`solutions__card${isOpen ? ' solutions__card--open' : ''}`}
+                key={solution.id}
+              >
+                <button
+                  className="solutions__trigger"
+                  id={buttonId}
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => toggleSolution(solution.id)}
+                >
+                  <span className="solutions__card-top">
+                    <span className="solutions__icon">{solution.icon}</span>
 
-              <div className="solution-card__content">
-                <h3 className="solution-card__title">
-                  {solution.title}
-                </h3>
+                    <span className="solutions__toggle" aria-hidden="true">
+                      <span />
+                      <span />
+                    </span>
+                  </span>
 
-                <p className="solution-card__description">
-                  {solution.description}
-                </p>
-              </div>
-            </article>
-          ))}
+                  <span className="solutions__card-copy">
+                    <strong>{solution.title}</strong>
+                    <span>{solution.description}</span>
+                  </span>
+
+                  <span className="solutions__hint">
+                    {isOpen ? 'Fechar exemplo' : 'Ver quando isso faz sentido'}
+                  </span>
+                </button>
+
+                <div
+                  className="solutions__details"
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  hidden={!isOpen}
+                >
+                  <div className="solutions__detail">
+                    <span className="solutions__detail-label">
+                      Quando isso acontece
+                    </span>
+                    <p>{solution.when}</p>
+                  </div>
+
+                  <div className="solutions__connector" aria-hidden="true">
+                    <span />
+                    <svg viewBox="0 0 28 12">
+                      <path d="M1 6h24M20 1l5 5-5 5" />
+                    </svg>
+                  </div>
+
+                  <div className="solutions__detail solutions__detail--outcome">
+                    <span className="solutions__detail-label">
+                      O que pode fazer sentido
+                    </span>
+                    <p>{solution.outcome}</p>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
         </div>
 
-        <div className="solutions__footer">
-          <p className="solutions__footer-text">
-            Tem uma necessidade específica e não encontrou uma solução pronta
-            que realmente resolva?
+        <div className="solutions__closing" data-reveal="up" data-reveal-delay="1">
+          <span className="solutions__closing-mark" aria-hidden="true">
+            ?
+          </span>
+          <p>
+            <strong>
+              Você não precisa saber qual dessas soluções precisa antes de falar
+              com a gente.
+            </strong>{' '}
+            Conte o que está acontecendo e começamos pelo problema.
           </p>
-
-          <a href="#contato" className="solutions__cta">
-            Conte sua necessidade
-          </a>
+          <a href="#contato">Conte o que está dando trabalho</a>
         </div>
       </div>
     </section>

@@ -1,77 +1,111 @@
+import { useEffect, useRef } from 'react'
 import './About.css'
 
-const panelItems = [
+const pillars = [
   {
     number: '01',
-    title: 'Desenvolvimento independente',
-    description:
-      'Estrutura enxuta, contato direto e decisões tomadas com proximidade durante o projeto.',
+    title: 'Sob medida',
+    text: 'Cada projeto parte da realidade da operação, não de uma solução pronta.',
   },
   {
     number: '02',
-    title: 'Software sob medida',
-    description:
-      'A solução parte da necessidade do negócio, e não de um produto pronto tentando servir para todos.',
+    title: 'Clareza no processo',
+    text: 'Decisões, limites e próximos passos são explicados ao longo do projeto.',
   },
   {
     number: '03',
-    title: 'Crescimento responsável',
-    description:
-      'A capacidade de atendimento cresce junto com a estrutura, evitando promessas além do que pode ser entregue.',
+    title: 'Desenvolvimento próximo',
+    text: 'O contato acontece de forma direta, do entendimento inicial até a entrega.',
   },
 ]
 
 function About() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+
+    if (!section) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add('about--visible')
+          observer.disconnect()
+        }
+      },
+      {
+        threshold: 0.16,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    )
+
+    observer.observe(section)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="about" id="sobre">
+    <section className="about" id="sobre" ref={sectionRef}>
       <div className="about__container">
-        <div className="about__content">
-          <span className="about__eyebrow">
-            Sobre a Soluverx
-          </span>
+        <header className="about__header">
+          <span className="about__eyebrow">Sobre a Soluverx</span>
 
           <h2 className="about__title">
-            Tecnologia com proximidade, método e responsabilidade.
+            Soluções digitais pensadas a partir de problemas reais.
           </h2>
 
-          <div className="about__text">
+          <div className="about__copy">
             <p>
-              A Soluverx nasceu com a proposta de desenvolver soluções digitais
-              sob medida para empresas que precisam organizar processos,
-              integrar informações e resolver necessidades que ferramentas
-              genéricas nem sempre atendem bem.
+              A Soluverx nasceu com uma proposta simples: entender dificuldades
+              reais de negócios e transformar essas necessidades em soluções
+              digitais claras, úteis e sob medida.
             </p>
 
             <p>
-              Cada projeto começa pelo entendimento do problema. A partir disso,
-              estruturamos a necessidade, definimos prioridades e desenvolvemos
-              a solução de forma organizada e transparente.
-            </p>
-
-            <p>
-              O crescimento é conduzido de forma responsável, com capacidade
-              controlada de projetos e foco em qualidade, clareza e contato
-              direto durante todo o desenvolvimento.
+              O foco não é desenvolver software por desenvolver. Primeiro vêm o
+              problema, o contexto e o que realmente precisa melhorar. A
+              tecnologia entra quando faz sentido.
             </p>
           </div>
-        </div>
+        </header>
 
-        <div className="about__panel">
-          {panelItems.map((item) => (
-            <div
-              className="about__panel-item"
-              key={item.number}
-            >
-              <span className="about__panel-label">
-                {item.number}
-              </span>
+        <div className="about__pillars">
+          {pillars.map((pillar) => (
+            <article className="about__pillar" key={pillar.number}>
+              <span className="about__pillar-number">{pillar.number}</span>
 
               <div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.text}</p>
               </div>
-            </div>
+            </article>
           ))}
+        </div>
+
+        <div className="about__founder">
+          <div className="about__founder-image-wrap">
+            <img
+              src="/about/eric-rodrigues.webp"
+              alt="Eric Rodrigues Campos"
+              className="about__founder-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div className="about__founder-copy">
+            <span className="about__founder-kicker">Quem conduz a Soluverx</span>
+
+            <strong>Eric Rodrigues Campos</strong>
+            <span>Engenharia de Software</span>
+          </div>
+
+          <div className="about__founder-detail" aria-hidden="true">
+            <span />
+          </div>
         </div>
       </div>
     </section>

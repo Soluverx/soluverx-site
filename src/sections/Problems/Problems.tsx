@@ -1,176 +1,176 @@
 import './Problems.css'
 
+type IconProps = {
+  className?: string
+}
+
+function ScatteredIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="5" y="7" width="13" height="11" rx="2.5" />
+      <rect x="30" y="5" width="13" height="12" rx="2.5" />
+      <rect x="7" y="31" width="14" height="11" rx="2.5" />
+      <rect x="31" y="30" width="12" height="12" rx="2.5" />
+      <path d="M18 13h8M24 13l-2.5-2.5M24 13l-2.5 2.5" />
+      <path d="M24 35h7M24 35l2.5-2.5M24 35l2.5 2.5" />
+    </svg>
+  )
+}
+
+function WhatsAppIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 7a16 16 0 0 0-13.6 24.4L8 39l8.2-2.2A16 16 0 1 0 24 7Z" />
+      <path d="M18.8 16.8c.4-.8 1-1 1.5-1h1.2c.4 0 .8.2 1 .6l1.6 3.6c.2.5.2.8-.1 1.2l-1.2 1.3c.8 1.7 2.8 3.7 4.6 4.4l1.5-1c.3-.3.7-.3 1.1-.1l3.5 1.6c.4.2.6.5.6.9v1.2c0 1-.6 1.6-1.5 1.8-.6.1-1.2.2-1.9.1-6.5-.4-12.3-6.2-12.7-12.6 0-.7 0-1.4.1-2Z" />
+    </svg>
+  )
+}
+
+function RepeatIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M12 15h22a7 7 0 0 1 7 7v2" />
+      <path d="M36 10l5 5-5 5" />
+      <path d="M36 33H14a7 7 0 0 1-7-7v-2" />
+      <path d="M12 38l-5-5 5-5" />
+      <rect x="19" y="19" width="10" height="10" rx="2" />
+    </svg>
+  )
+}
+
+function ReportIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M13 6h15l8 8v28H13a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4Z" />
+      <path d="M28 6v9h9" />
+      <path d="M16 32V24M23 32V20M30 32v-5" />
+    </svg>
+  )
+}
+
+function PersonIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="18" cy="16" r="6" />
+      <path d="M7 37c1.5-7 5.2-10.5 11-10.5S27.5 30 29 37" />
+      <path d="M33 13h9v9" />
+      <path d="M42 13 29 26" />
+      <circle cx="36" cy="32" r="5" />
+      <path d="M36 29v3l2 1.5" />
+    </svg>
+  )
+}
+
+function SpreadsheetIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="7" y="6" width="34" height="36" rx="4" />
+      <path d="M7 17h34M7 28h34M18 17v25M30 17v25" />
+      <path d="M13 11h9" />
+      <path d="M35 9v5M32.5 11.5h5" />
+    </svg>
+  )
+}
+
 const problems = [
-  {
-    title: 'Processos manuais',
-    description:
-      'Tarefas repetitivas consomem tempo e aumentam a chance de erro no dia a dia.',
-    icon: 'process',
-  },
   {
     title: 'Informações espalhadas',
     description:
-      'Dados ficam divididos entre planilhas, mensagens, sistemas e anotações diferentes.',
-    icon: 'nodes',
+      'Você precisa abrir planilhas, mensagens, arquivos e sistemas diferentes para encontrar o que procura.',
+    Icon: ScatteredIcon,
+    tone: 'blue',
   },
   {
-    title: 'Retrabalho',
+    title: 'Pedidos e informações no WhatsApp',
     description:
-      'A mesma informação precisa ser digitada, conferida ou organizada várias vezes.',
-    icon: 'repeat',
+      'Pedidos, atualizações ou decisões ficam no meio de conversas e depois precisam ser procurados novamente.',
+    Icon: WhatsAppIcon,
+    tone: 'green',
   },
   {
-    title: 'Falta de visibilidade',
+    title: 'A mesma coisa várias vezes',
     description:
-      'Sem uma visão clara dos dados, decisões importantes ficam mais lentas e difíceis.',
-    icon: 'visibility',
+      'Uma informação é copiada, digitada ou conferida manualmente em mais de um lugar.',
+    Icon: RepeatIcon,
+    tone: 'cyan',
   },
   {
-    title: 'Ferramentas inadequadas',
+    title: 'Relatórios que dependem de trabalho manual',
     description:
-      'Nem sempre uma solução pronta acompanha a forma como cada negócio realmente funciona.',
-    icon: 'tool',
+      'Para enxergar uma informação atualizada, alguém precisa gerar, juntar ou organizar os dados novamente.',
+    Icon: ReportIcon,
+    tone: 'violet',
   },
   {
-    title: 'Dificuldade para escalar',
+    title: 'Informação que depende de alguém',
     description:
-      'Processos que funcionam no início podem se tornar lentos, confusos e difíceis de manter conforme o negócio cresce.',
-    icon: 'scale',
+      'Para descobrir como alguma coisa está, você precisa perguntar para uma pessoa específica ou esperar que ela encontre a informação.',
+    Icon: PersonIcon,
+    tone: 'sky',
+  },
+  {
+    title: 'A planilha que cresceu demais',
+    description:
+      'Ela começou resolvendo algo simples, mas hoje tem tantas abas, fórmulas e controles que praticamente virou um sistema improvisado.',
+    Icon: SpreadsheetIcon,
+    tone: 'emerald',
   },
 ]
-
-function ProblemIcon({ type }: { type: string }) {
-  const commonProps = {
-    viewBox: '0 0 48 48',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.8,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true,
-  }
-
-  switch (type) {
-    case 'process':
-      return (
-        <svg {...commonProps}>
-          <circle cx="24" cy="24" r="7" />
-          <path d="M24 8v5" />
-          <path d="M24 35v5" />
-          <path d="M8 24h5" />
-          <path d="M35 24h5" />
-          <path d="M12.7 12.7l3.5 3.5" />
-          <path d="M31.8 31.8l3.5 3.5" />
-          <path d="M35.3 12.7l-3.5 3.5" />
-          <path d="M16.2 31.8l-3.5 3.5" />
-        </svg>
-      )
-
-    case 'nodes':
-      return (
-        <svg {...commonProps}>
-          <circle cx="12" cy="12" r="3.5" />
-          <circle cx="36" cy="12" r="3.5" />
-          <circle cx="12" cy="36" r="3.5" />
-          <circle cx="36" cy="36" r="3.5" />
-          <circle cx="24" cy="24" r="4" />
-          <path d="M15 14l6 6" />
-          <path d="M33 14l-6 6" />
-          <path d="M15 34l6-6" />
-          <path d="M33 34l-6-6" />
-        </svg>
-      )
-
-    case 'repeat':
-      return (
-        <svg {...commonProps}>
-          <path d="M14 15h18l-4-4" />
-          <path d="M32 15l-4 4" />
-          <path d="M34 33H16l4 4" />
-          <path d="M16 33l4-4" />
-          <path d="M36 17c2 2 3 4.5 3 7" />
-          <path d="M12 31c-2-2-3-4.5-3-7" />
-        </svg>
-      )
-
-    case 'visibility':
-      return (
-        <svg {...commonProps}>
-          <path d="M6 24s6-10 18-10 18 10 18 10-6 10-18 10S6 24 6 24Z" />
-          <circle cx="24" cy="24" r="4.5" />
-          <path d="M24 8v3" />
-          <path d="M24 37v3" />
-        </svg>
-      )
-
-    case 'tool':
-      return (
-        <svg {...commonProps}>
-          <path d="M29 10a9 9 0 0 0-10.5 11L8 31.5 16.5 40 27 29.5A9 9 0 0 0 38 19l-7 7-9-9 7-7Z" />
-        </svg>
-      )
-
-    case 'scale':
-      return (
-        <svg {...commonProps}>
-          <path d="M10 37h28" />
-          <path d="M14 31l7-8 6 5 10-14" />
-          <path d="M31 14h6v6" />
-        </svg>
-      )
-
-    default:
-      return null
-  }
-}
 
 function Problems() {
   return (
     <section className="problems" id="problemas">
       <div className="problems__container">
-        <div className="problems__header">
-          <span className="problems__eyebrow">
-            Problemas reais
-          </span>
+        <header className="problems__header" data-reveal="up">
+          <span className="problems__eyebrow">Situações do dia a dia</span>
 
           <h2 className="problems__title">
-            Nem todo problema precisa de mais uma planilha.
+            Você se reconhece em alguma dessas situações?
           </h2>
 
           <p className="problems__intro">
-            Quando processos começam a depender de controles manuais,
-            informações espalhadas e tarefas repetitivas, a tecnologia pode
-            ajudar a organizar o trabalho de forma mais simples e eficiente.
+            Estes são só alguns exemplos. Às vezes o problema é grande. Às
+            vezes é só uma tarefa chata, repetitiva ou desorganizada que toma
+            alguns minutos todos os dias.
           </p>
-        </div>
+        </header>
 
-        <div className="problems__grid">
-          {problems.map((problem, index) => (
-            <article
-              className="problem-card"
-              key={problem.title}
-            >
+        <div className="problems__grid" data-reveal-stagger>
+          {problems.map(({ title, description, Icon, tone }, index) => (
+            <article className="problem-card" key={title}>
               <div className="problem-card__top">
-                <span className="problem-card__number">
-                  {String(index + 1).padStart(2, '0')}
+                <span className={`problem-card__icon problem-card__icon--${tone}`}>
+                  <Icon />
                 </span>
 
-                <span className="problem-card__icon">
-                  <ProblemIcon type={problem.icon} />
+                <span className="problem-card__number">
+                  {String(index + 1).padStart(2, '0')}
                 </span>
               </div>
 
               <div className="problem-card__content">
-                <h3 className="problem-card__title">
-                  {problem.title}
-                </h3>
-
-                <p className="problem-card__description">
-                  {problem.description}
-                </p>
+                <h3 className="problem-card__title">{title}</h3>
+                <p className="problem-card__description">{description}</p>
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="problems__other" data-reveal="up" data-reveal-delay="1">
+          <div className="problems__other-copy">
+            <span className="problems__other-kicker">E se o seu problema for outro?</span>
+            <h3>Não precisa caber em uma dessas caixas.</h3>
+            <p>
+              Se existe algo no seu negócio que poderia ser mais simples,
+              organizado ou automático, vale a pena entender se a tecnologia
+              pode ajudar.
+            </p>
+          </div>
+
+          <a className="problems__other-link" href="#contato">
+            <span>Conte o que está dando trabalho</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>

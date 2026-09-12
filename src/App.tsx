@@ -3,6 +3,7 @@ import Footer from './components/Footer/Footer'
 
 import Hero from './sections/Hero/Hero'
 import Problems from './sections/Problems/Problems'
+import Inclusion from './sections/Inclusion/Inclusion'
 import Solutions from './sections/Solutions/Solutions'
 import Process from './sections/Process/Process'
 import Differentials from './sections/Differentials/Differentials'
@@ -18,6 +19,7 @@ function App() {
       <main>
         <Hero />
         <Problems />
+        <Inclusion />
         <Solutions />
         <Process />
         <Differentials />

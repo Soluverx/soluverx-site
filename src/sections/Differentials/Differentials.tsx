@@ -1,81 +1,209 @@
+import { useEffect, useRef } from 'react'
 import './Differentials.css'
+
+const principles = [
+  {
+    lead: 'Entender',
+    rest: 'antes de construir.',
+    side: 'left',
+  },
+  {
+    lead: 'Explicar',
+    rest: 'antes de complicar.',
+    side: 'right',
+  },
+  {
+    lead: 'Ser claro',
+    rest: 'antes de prometer.',
+    side: 'left',
+  },
+  {
+    lead: 'Construir',
+    rest: 'só o que faz sentido.',
+    side: 'right',
+  },
+]
 
 const differentials = [
   {
     title: 'Contato direto',
-    description:
-      'Você conversa diretamente com quem está analisando e desenvolvendo a solução.',
-  },
-  {
-    title: 'Análise antes de prometer',
-    description:
-      'Primeiro entendemos o cenário, os limites e a viabilidade antes de assumir qualquer compromisso.',
+    text: 'Você conversa com quem está entendendo e desenvolvendo o projeto.',
   },
   {
     title: 'Solução sob medida',
-    description:
-      'Cada projeto parte da necessidade real do negócio, sem tentar encaixar o problema em uma solução genérica.',
+    text: 'A tecnologia se adapta à necessidade — e não o contrário.',
   },
   {
     title: 'Organização',
-    description:
-      'Requisitos, etapas e decisões são estruturados para manter o projeto claro do início ao fim.',
+    text: 'Escopo, prioridades, etapas e decisões ficam claros ao longo do projeto.',
   },
   {
     title: 'Transparência',
-    description:
-      'Escopo, andamento, limitações e próximos passos são tratados com clareza durante o desenvolvimento.',
+    text: 'Se algo não fizer sentido, for inviável ou precisar mudar, isso é falado com clareza.',
   },
   {
     title: 'Capacidade controlada',
-    description:
-      'A quantidade de projetos é limitada para preservar acompanhamento, qualidade e responsabilidade nas entregas.',
+    text: 'Os projetos são assumidos de forma consciente para preservar atenção e qualidade.',
   },
 ]
 
 function Differentials() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const manifestoRef = useRef<HTMLDivElement | null>(null)
+  const detailsRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const manifesto = manifestoRef.current
+    const details = detailsRef.current
+
+    if (!section || !manifesto || !details) {
+      return
+    }
+
+    const principleItems = Array.from(
+      manifesto.querySelectorAll<HTMLElement>('.differentials__principle'),
+    )
+
+    const detailItems = Array.from(
+      details.querySelectorAll<HTMLElement>('.differentials__item'),
+    )
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add('differentials--visible')
+            sectionObserver.disconnect()
+          }
+        })
+      },
+      {
+        threshold: 0.12,
+      },
+    )
+
+    const principleObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('differentials__principle--visible')
+            principleObserver.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: 0.42,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    )
+
+    const detailObserver = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => {
+            const aIndex = detailItems.indexOf(a.target as HTMLElement)
+            const bIndex = detailItems.indexOf(b.target as HTMLElement)
+            return aIndex - bIndex
+          })
+
+        visibleEntries.forEach((entry, index) => {
+          const element = entry.target as HTMLElement
+          element.style.setProperty('--detail-delay', `${index * 90}ms`)
+          element.classList.add('differentials__item--visible')
+          detailObserver.unobserve(entry.target)
+        })
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -5% 0px',
+      },
+    )
+
+    sectionObserver.observe(section)
+    principleItems.forEach((item) => principleObserver.observe(item))
+    detailItems.forEach((item) => detailObserver.observe(item))
+
+    return () => {
+      sectionObserver.disconnect()
+      principleObserver.disconnect()
+      detailObserver.disconnect()
+    }
+  }, [])
+
   return (
     <section
       className="differentials"
       id="diferenciais"
+      ref={sectionRef}
     >
       <div className="differentials__container">
-        <div className="differentials__header">
+        <header className="differentials__header">
           <span className="differentials__eyebrow">
-            Por que trabalhar conosco
+            Nosso jeito de trabalhar
           </span>
 
           <h2 className="differentials__title">
-            Desenvolvimento com clareza do início ao fim.
+            Software é parte do projeto. Clareza também.
           </h2>
 
           <p className="differentials__intro">
-            Mais do que desenvolver software, buscamos conduzir cada projeto
-            com proximidade, organização e responsabilidade.
+            Um bom projeto não depende só do que é desenvolvido. Depende também
+            de entender bem o problema, explicar decisões e manter expectativas
+            claras do início ao fim.
           </p>
-        </div>
+        </header>
 
-        <div className="differentials__grid">
-          {differentials.map((differential, index) => (
-            <article
-              className="differential-card"
-              key={differential.title}
+        <div
+          className="differentials__manifesto"
+          aria-label="Princípios de trabalho"
+          ref={manifestoRef}
+        >
+          <div className="differentials__manifesto-line" aria-hidden="true">
+            <span />
+          </div>
+
+          {principles.map((principle, index) => (
+            <div
+              className={`differentials__principle differentials__principle--${principle.side}`}
+              key={principle.lead}
             >
-              <span className="differential-card__number">
-                {String(index + 1).padStart(2, '0')}
+              <span className="differentials__principle-index">
+                0{index + 1}
               </span>
 
-              <div className="differential-card__content">
-                <h3 className="differential-card__title">
-                  {differential.title}
-                </h3>
+              <span className="differentials__principle-node" aria-hidden="true">
+                <span />
+              </span>
 
-                <p className="differential-card__description">
-                  {differential.description}
-                </p>
-              </div>
-            </article>
+              <span className="differentials__principle-connector" aria-hidden="true" />
+
+              <p>
+                <strong>{principle.lead}</strong>
+                <span>{principle.rest}</span>
+              </p>
+            </div>
           ))}
+        </div>
+
+        <div className="differentials__details" ref={detailsRef}>
+          <div className="differentials__details-heading">
+            <span>Na prática, isso significa</span>
+          </div>
+
+          <div className="differentials__details-grid">
+            {differentials.map((item) => (
+              <article className="differentials__item" key={item.title}>
+                <span className="differentials__item-dot" aria-hidden="true" />
+
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

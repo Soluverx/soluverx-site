@@ -1,83 +1,129 @@
+import { useEffect, useRef } from 'react'
 import './Process.css'
 
 const steps = [
   {
     number: '01',
-    title: 'Entendimento',
-    description:
-      'Primeiro buscamos entender o problema, o contexto e o que realmente precisa ser resolvido.',
+    title: 'Você conta o problema',
+    text: 'Você explica o que está dando trabalho hoje. Não precisa saber o nome da solução, a tecnologia ou chegar com um escopo pronto.',
   },
   {
     number: '02',
-    title: 'Planejamento',
-    description:
-      'Organizamos requisitos, prioridades, escopo e a melhor forma de estruturar a solução.',
+    title: 'Entendemos o contexto',
+    text: 'Conversamos sobre como o processo funciona hoje, onde estão as dificuldades e o que você gostaria de melhorar.',
   },
   {
     number: '03',
-    title: 'Desenvolvimento',
-    description:
-      'A solução começa a ser construída de forma organizada, com foco no que foi definido.',
+    title: 'Avaliamos o que faz sentido',
+    text: 'Antes de propor qualquer desenvolvimento, analisamos se a tecnologia realmente pode ajudar e qual tipo de solução faz mais sentido.',
   },
   {
     number: '04',
-    title: 'Testes',
-    description:
-      'Validamos funcionamento, fluxos e detalhes importantes antes da entrega.',
+    title: 'Organizamos a proposta',
+    text: 'Se houver um caminho viável, definimos o que será feito, prioridades, limites e próximos passos.',
   },
   {
     number: '05',
-    title: 'Entrega',
-    description:
-      'A solução é disponibilizada com orientações claras e espaço para ajustes necessários.',
+    title: 'Desenvolvemos e validamos',
+    text: 'A solução é construída por etapas, com validações ao longo do caminho para evitar desenvolver algo distante da necessidade real.',
+  },
+  {
+    number: '06',
+    title: 'Entregamos e orientamos',
+    text: 'Na entrega, você entende o que foi desenvolvido e quais caminhos existem caso faça sentido continuar evoluindo.',
   },
 ]
 
 function Process() {
+  const journeyRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const journey = journeyRef.current
+
+    if (!journey) {
+      return
+    }
+
+    const items = Array.from(
+      journey.querySelectorAll<HTMLElement>('.process__step'),
+    )
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('process__step--visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: 0.42,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    )
+
+    items.forEach((item) => observer.observe(item))
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section className="process" id="processo">
       <div className="process__container">
-        <div className="process__header">
-          <span className="process__eyebrow">
-            Como trabalhamos
-          </span>
+        <header className="process__header">
+          <span className="process__eyebrow">Como trabalhamos</span>
 
           <h2 className="process__title">
-            Primeiro entendemos. Depois desenvolvemos.
+            O que acontece quando você fala com a Soluverx?
           </h2>
 
           <p className="process__intro">
-            Cada projeto passa por etapas claras para reduzir improvisos,
-            alinhar expectativas e manter o desenvolvimento organizado.
+            Você não precisa chegar com uma solução pronta. O processo começa
+            entendendo o problema e só avança quando existe clareza sobre o que
+            realmente faz sentido construir.
           </p>
-        </div>
+        </header>
 
-        <div className="process__timeline">
-          <div
-            className="process__line-progress"
-            aria-hidden="true"
-          />
+        <div className="process__journey" ref={journeyRef}>
+          <div className="process__axis-base" aria-hidden="true" />
 
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <article
-              className="process-step"
+              className={`process__step ${
+                index % 2 === 0
+                  ? 'process__step--left'
+                  : 'process__step--right'
+              }`}
               key={step.number}
             >
-              <div className="process-step__marker">
-                <span>{step.number}</span>
+              <span className="process__segment" aria-hidden="true" />
+
+              <div className="process__step-content">
+                <span className="process__number">{step.number}</span>
+
+                <div className="process__copy">
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
               </div>
 
-              <div className="process-step__content">
-                <h3 className="process-step__title">
-                  {step.title}
-                </h3>
-
-                <p className="process-step__description">
-                  {step.description}
-                </p>
-              </div>
+              <span className="process__node" aria-hidden="true">
+                <span />
+              </span>
             </article>
           ))}
+        </div>
+
+        <div className="process__closing">
+          <span className="process__closing-kicker">
+            Clareza antes de complexidade
+          </span>
+
+          <a className="process__closing-link" href="#contato">
+            Quer entender se vale a pena conversar sobre isso?
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
