@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'motion/react'
 import './Solutions.css'
 
 const solutions = [
@@ -34,10 +35,25 @@ const solutions = [
 ]
 
 function Solutions() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="solutions" id="solucoes">
       <div className="solutions__container">
-        <div className="solutions__header">
+        <motion.div
+          className="solutions__header"
+          initial={
+            reduceMotion
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 28 }
+          }
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.65,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="solutions__eyebrow">Soluções</span>
 
           <h2 className="solutions__title">
@@ -49,11 +65,40 @@ function Solutions() {
             projeto, buscando simplificar processos, organizar informações e
             gerar mais clareza para o negócio.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="solutions__grid">
+        <motion.div
+          className="solutions__grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : 0.09,
+              },
+            },
+          }}
+        >
           {solutions.map((solution, index) => (
-            <article className="solution-card" key={solution.title}>
+            <motion.article
+              className="solution-card"
+              key={solution.title}
+              variants={{
+                hidden: reduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 24 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: reduceMotion ? 0 : 0.55,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+            >
               <div className="solution-card__top">
                 <span className="solution-card__number">
                   {String(index + 1).padStart(2, '0')}
@@ -65,17 +110,32 @@ function Solutions() {
               </div>
 
               <div className="solution-card__content">
-                <h3 className="solution-card__title">{solution.title}</h3>
+                <h3 className="solution-card__title">
+                  {solution.title}
+                </h3>
 
                 <p className="solution-card__description">
                   {solution.description}
                 </p>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="solutions__footer">
+        <motion.div
+          className="solutions__footer"
+          initial={
+            reduceMotion
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 20 }
+          }
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.55,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <p className="solutions__footer-text">
             Tem uma necessidade específica e não encontrou uma solução pronta
             que realmente resolva?
@@ -84,7 +144,7 @@ function Solutions() {
           <a href="#contato" className="solutions__cta">
             Conte sua necessidade
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

@@ -1,10 +1,47 @@
+import { motion, useReducedMotion } from 'motion/react'
 import './About.css'
 
+const panelItems = [
+  {
+    number: '01',
+    title: 'Desenvolvimento independente',
+    description:
+      'Estrutura enxuta, contato direto e decisões tomadas com proximidade durante o projeto.',
+  },
+  {
+    number: '02',
+    title: 'Software sob medida',
+    description:
+      'A solução parte da necessidade do negócio, e não de um produto pronto tentando servir para todos.',
+  },
+  {
+    number: '03',
+    title: 'Crescimento responsável',
+    description:
+      'A capacidade de atendimento cresce junto com a estrutura, evitando promessas além do que pode ser entregue.',
+  },
+]
+
 function About() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="about" id="sobre">
       <div className="about__container">
-        <div className="about__content">
+        <motion.div
+          className="about__content"
+          initial={
+            reduceMotion
+              ? { opacity: 1, x: 0 }
+              : { opacity: 0, x: -28 }
+          }
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="about__eyebrow">Sobre a Soluverx</span>
 
           <h2 className="about__title">
@@ -31,45 +68,51 @@ function About() {
               direto durante todo o desenvolvimento.
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="about__panel">
-          <div className="about__panel-item">
-            <span className="about__panel-label">01</span>
+        <motion.div
+          className="about__panel"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : 0.11,
+              },
+            },
+          }}
+        >
+          {panelItems.map((item) => (
+            <motion.div
+              className="about__panel-item"
+              key={item.number}
+              variants={{
+                hidden: reduceMotion
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: 24 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    duration: reduceMotion ? 0 : 0.55,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+            >
+              <span className="about__panel-label">
+                {item.number}
+              </span>
 
-            <div>
-              <h3>Desenvolvimento independente</h3>
-              <p>
-                Estrutura enxuta, contato direto e decisões tomadas com
-                proximidade durante o projeto.
-              </p>
-            </div>
-          </div>
-
-          <div className="about__panel-item">
-            <span className="about__panel-label">02</span>
-
-            <div>
-              <h3>Software sob medida</h3>
-              <p>
-                A solução parte da necessidade do negócio, e não de um produto
-                pronto tentando servir para todos.
-              </p>
-            </div>
-          </div>
-
-          <div className="about__panel-item">
-            <span className="about__panel-label">03</span>
-
-            <div>
-              <h3>Crescimento responsável</h3>
-              <p>
-                A capacidade de atendimento cresce junto com a estrutura,
-                evitando promessas além do que pode ser entregue.
-              </p>
-            </div>
-          </div>
-        </div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   )

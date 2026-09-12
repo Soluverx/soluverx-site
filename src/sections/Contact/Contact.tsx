@@ -1,8 +1,10 @@
 import { useForm, ValidationError } from '@formspree/react'
+import { motion, useReducedMotion } from 'motion/react'
 import './Contact.css'
 
 function Contact() {
   const [state, handleSubmit] = useForm('mwlkzzvr')
+  const reduceMotion = useReducedMotion()
 
   const whatsappUrl =
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
@@ -14,7 +16,20 @@ function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="contact__container">
-        <div className="contact__content">
+        <motion.div
+          className="contact__content"
+          initial={
+            reduceMotion
+              ? { opacity: 1, x: 0 }
+              : { opacity: 0, x: -28 }
+          }
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="contact__eyebrow">Contato</span>
 
           <h2 className="contact__title" id="contact-title">
@@ -40,12 +55,24 @@ function Contact() {
               Falar pelo WhatsApp
             </a>
           </div>
-        </div>
+        </motion.div>
 
-        <form
+        <motion.form
           className="contact__form"
           aria-label="Formulário de contato"
           onSubmit={handleSubmit}
+          initial={
+            reduceMotion
+              ? { opacity: 1, x: 0 }
+              : { opacity: 0, x: 28 }
+          }
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.7,
+            delay: reduceMotion ? 0 : 0.08,
+            ease: [0.22, 1, 0.36, 1],
+          }}
         >
           <div className="contact__field">
             <label htmlFor="name">Nome</label>
@@ -142,7 +169,7 @@ function Contact() {
           {!state.succeeded && state.errors && (
             <ValidationError errors={state.errors} />
           )}
-        </form>
+        </motion.form>
       </div>
     </section>
   )

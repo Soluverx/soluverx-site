@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'motion/react'
 import './Differentials.css'
 
 const differentials = [
@@ -34,10 +35,31 @@ const differentials = [
 ]
 
 function Differentials() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="differentials" id="diferenciais">
       <div className="differentials__container">
-        <div className="differentials__header">
+        <motion.div
+          className="differentials__header"
+          initial={
+            reduceMotion
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 28 }
+          }
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.35,
+          }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.65,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="differentials__eyebrow">
             Por que trabalhar conosco
           </span>
@@ -50,13 +72,46 @@ function Differentials() {
             Mais do que desenvolver software, buscamos conduzir cada projeto
             com proximidade, organização e responsabilidade.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="differentials__grid">
+        <motion.div
+          className="differentials__grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.12,
+          }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : 0.09,
+                delayChildren: reduceMotion ? 0 : 0.05,
+              },
+            },
+          }}
+        >
           {differentials.map((differential, index) => (
-            <article
+            <motion.article
               className="differential-card"
               key={differential.title}
+              variants={{
+                hidden: reduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : {
+                      opacity: 0,
+                      y: 24,
+                    },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: reduceMotion ? 0 : 0.55,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
             >
               <span className="differential-card__number">
                 {String(index + 1).padStart(2, '0')}
@@ -71,9 +126,9 @@ function Differentials() {
                   {differential.description}
                 </p>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

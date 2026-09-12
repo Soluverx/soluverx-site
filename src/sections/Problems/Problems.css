@@ -1,5 +1,5 @@
 .problems {
-  padding: 120px 0;
+  padding: 88px 0;
 
   border-top: 1px solid var(--border-color);
 
@@ -23,17 +23,20 @@
 
 .problems__header {
   max-width: 760px;
-  margin-bottom: 64px;
+
+  margin-bottom: 52px;
 }
 
 .problems__eyebrow {
   display: inline-block;
-  margin-bottom: 20px;
+
+  margin-bottom: 18px;
 
   color: var(--color-cyan);
 
   font-size: 0.8rem;
   font-weight: 600;
+
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -43,12 +46,14 @@
 
   font-size: clamp(2.4rem, 5vw, 4.4rem);
   font-weight: 700;
+
   letter-spacing: -0.04em;
 }
 
 .problems__intro {
   max-width: 660px;
-  margin-top: 24px;
+
+  margin-top: 22px;
 
   color: var(--color-text-secondary);
 
@@ -59,11 +64,13 @@
 .problems__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
   gap: 20px;
 }
 
 .problem-card {
-  min-height: 260px;
+  min-height: 240px;
+
   padding: 28px;
 
   position: relative;
@@ -77,12 +84,19 @@
   background: rgba(31, 41, 55, 0.28);
 
   overflow: hidden;
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .problem-card::before {
   content: '';
 
   position: absolute;
+
   top: 0;
   left: 0;
 
@@ -91,21 +105,24 @@
 
   opacity: 0;
 
-  background: linear-gradient(
-    90deg,
-    var(--color-blue),
-    var(--color-cyan)
-  );
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-blue),
+      var(--color-cyan)
+    );
 
-  transition: opacity var(--transition-default);
+  transition: opacity 220ms ease;
 }
 
 .problem-card:hover {
   transform: translateY(-4px);
 
-  border-color: rgba(148, 163, 184, 0.28);
+  border-color: rgba(6, 182, 212, 0.26);
 
   background: rgba(31, 41, 55, 0.42);
+
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
 }
 
 .problem-card:hover::before {
@@ -124,7 +141,7 @@
 }
 
 .problem-card__title {
-  margin-top: 48px;
+  margin-top: 42px;
 
   color: var(--color-white);
 
@@ -149,11 +166,11 @@
 
 @media (max-width: 640px) {
   .problems {
-    padding: 72px 0;
+    padding: 64px 0;
   }
 
   .problems__header {
-    margin-bottom: 34px;
+    margin-bottom: 32px;
   }
 
   .problems__title {
@@ -162,25 +179,40 @@
 
   .problems__intro {
     margin-top: 18px;
+
     font-size: 0.98rem;
   }
 
   .problems__grid {
     grid-template-columns: 1fr;
+
     gap: 14px;
   }
 
   .problem-card {
     min-height: 180px;
+
     padding: 22px;
   }
 
   .problem-card__title {
     margin-top: 30px;
+
     font-size: 1.2rem;
   }
 
   .problem-card__description {
     margin-top: 10px;
+  }
+
+  .problem-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .problem-card,
+  .problem-card::before {
+    transition: none;
   }
 }

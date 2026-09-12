@@ -1,5 +1,5 @@
 .differentials {
-  padding: 120px 0;
+  padding: 88px 0;
 
   border-top: 1px solid var(--border-color);
 
@@ -24,13 +24,13 @@
 .differentials__header {
   max-width: 780px;
 
-  margin-bottom: 64px;
+  margin-bottom: 52px;
 }
 
 .differentials__eyebrow {
   display: inline-block;
 
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 
   color: var(--color-cyan);
 
@@ -53,7 +53,7 @@
 .differentials__intro {
   max-width: 640px;
 
-  margin-top: 24px;
+  margin-top: 22px;
 
   color: var(--color-text-secondary);
 
@@ -70,12 +70,13 @@
 }
 
 .differential-card {
-  min-height: 230px;
+  min-height: 210px;
 
-  padding: 32px;
+  padding: 30px;
 
   display: grid;
   grid-template-columns: 52px 1fr;
+
   gap: 24px;
 
   border-right: 1px solid var(--border-color);
@@ -83,11 +84,47 @@
 
   background: rgba(31, 41, 55, 0.12);
 
-  transition: background var(--transition-default);
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    background 220ms ease,
+    transform 220ms ease,
+    border-color 220ms ease;
+}
+
+.differential-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(6, 182, 212, 0.6),
+    transparent
+  );
+
+  opacity: 0;
+
+  transition: opacity 220ms ease;
 }
 
 .differential-card:hover {
-  background: rgba(31, 41, 55, 0.3);
+  background: rgba(31, 41, 55, 0.28);
+
+  transform: translateY(-3px);
+}
+
+.differential-card:hover::before {
+  opacity: 1;
 }
 
 .differential-card__number {
@@ -111,9 +148,9 @@
 }
 
 .differential-card__description {
-  margin-top: 14px;
-
   max-width: 460px;
+
+  margin-top: 14px;
 
   color: var(--color-text-secondary);
 
@@ -125,15 +162,19 @@
   .differentials__grid {
     grid-template-columns: 1fr;
   }
+
+  .differential-card:hover {
+    transform: none;
+  }
 }
 
 @media (max-width: 640px) {
   .differentials {
-    padding: 72px 0;
+    padding: 64px 0;
   }
 
   .differentials__header {
-    margin-bottom: 34px;
+    margin-bottom: 32px;
   }
 
   .differentials__title {
@@ -152,6 +193,7 @@
     padding: 22px;
 
     grid-template-columns: 34px 1fr;
+
     gap: 14px;
   }
 
@@ -161,5 +203,12 @@
 
   .differential-card__description {
     margin-top: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .differential-card,
+  .differential-card::before {
+    transition: none;
   }
 }

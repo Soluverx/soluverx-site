@@ -1,5 +1,6 @@
 .hero {
   min-height: 100vh;
+
   display: flex;
   align-items: center;
 
@@ -7,6 +8,25 @@
 
   position: relative;
   overflow: hidden;
+}
+
+.hero__ambient {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 78% 46%,
+      rgba(37, 99, 235, 0.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 50%,
+      rgba(6, 182, 212, 0.04),
+      transparent 20%
+    );
 }
 
 .hero__container {
@@ -20,8 +40,16 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
+
   gap: 72px;
+
+  position: relative;
+  z-index: 2;
 }
+
+/* =========================
+   CONTEÚDO
+========================= */
 
 .hero__content {
   max-width: 720px;
@@ -36,6 +64,7 @@
 
   font-size: 0.85rem;
   font-weight: 600;
+
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -45,6 +74,7 @@
 
   font-size: clamp(2.8rem, 5vw, 5rem);
   font-weight: 700;
+
   letter-spacing: -0.045em;
 }
 
@@ -59,14 +89,18 @@
   line-height: 1.7;
 }
 
+/* =========================
+   BOTÕES
+========================= */
+
 .hero__actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+
   gap: 16px;
 
   margin-top: 38px;
-
-  flex-wrap: wrap;
 }
 
 .hero__primary,
@@ -83,17 +117,27 @@
 
   font-size: 0.95rem;
   font-weight: 600;
+
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .hero__primary {
   background: var(--color-blue);
   color: var(--color-white);
+
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
 }
 
 .hero__primary:hover {
   background: #1d4ed8;
 
   transform: translateY(-2px);
+
+  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.24);
 }
 
 .hero__secondary {
@@ -106,10 +150,27 @@
   border-color: rgba(255, 255, 255, 0.35);
 
   background: rgba(255, 255, 255, 0.04);
+
+  transform: translateY(-2px);
 }
+
+/* =========================
+   VISUAL
+========================= */
 
 .hero__visual {
   min-height: 520px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+}
+
+.hero__visual-stage {
+  width: 430px;
+  height: 430px;
 
   display: flex;
   align-items: center;
@@ -126,16 +187,60 @@
 
   border-radius: 50%;
 
-  background: radial-gradient(
-    circle,
-    rgba(37, 99, 235, 0.34) 0%,
-    rgba(6, 182, 212, 0.16) 35%,
-    transparent 72%
-  );
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.28) 0%,
+      rgba(6, 182, 212, 0.12) 35%,
+      transparent 72%
+    );
 
   filter: blur(12px);
 
   pointer-events: none;
+
+  animation: heroGlow 6s ease-in-out infinite;
+}
+
+/* =========================
+   ANÉIS
+========================= */
+
+.hero__ring {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.hero__ring--inner {
+  width: 325px;
+  height: 325px;
+
+  border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+.hero__ring--outer {
+  width: 410px;
+  height: 410px;
+
+  border: 1px solid rgba(6, 182, 212, 0.05);
+}
+
+/* =========================
+   SÍMBOLO
+========================= */
+
+.hero__symbol-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  z-index: 1;
+
+  animation: heroFloat 6s ease-in-out infinite;
 }
 
 .hero__symbol {
@@ -144,13 +249,103 @@
 
   display: block;
 
-  position: relative;
-  z-index: 1;
-
   object-fit: contain;
 
-  filter: drop-shadow(0 0 34px rgba(37, 99, 235, 0.2));
+  filter:
+    drop-shadow(0 0 30px rgba(37, 99, 235, 0.18))
+    drop-shadow(0 0 48px rgba(6, 182, 212, 0.06));
 }
+
+/* =========================
+   SCROLL INDICATOR
+========================= */
+
+.hero__scroll {
+  width: 22px;
+  height: 36px;
+
+  position: absolute;
+
+  bottom: 24px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+
+  padding-top: 7px;
+
+  opacity: 0.55;
+
+  pointer-events: none;
+}
+
+.hero__scroll span {
+  width: 3px;
+  height: 6px;
+
+  border-radius: 10px;
+
+  background: var(--color-cyan);
+
+  animation: heroScroll 1.8s ease-in-out infinite;
+}
+
+/* =========================
+   ANIMAÇÕES CSS
+========================= */
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes heroGlow {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes heroScroll {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(11px);
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 900px) {
   .hero {
@@ -170,7 +365,22 @@
     min-height: 180px;
   }
 
+  .hero__visual-stage {
+    width: 200px;
+    height: 200px;
+  }
+
   .hero__glow {
+    width: 190px;
+    height: 190px;
+  }
+
+  .hero__ring--inner {
+    width: 145px;
+    height: 145px;
+  }
+
+  .hero__ring--outer {
     width: 190px;
     height: 190px;
   }
@@ -178,7 +388,15 @@
   .hero__symbol {
     width: 160px;
   }
+
+  .hero__scroll {
+    display: none;
+  }
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
   .hero {
@@ -212,12 +430,44 @@
     margin-top: 4px;
   }
 
+  .hero__visual-stage {
+    width: 160px;
+    height: 160px;
+  }
+
   .hero__glow {
+    width: 145px;
+    height: 145px;
+  }
+
+  .hero__ring--inner {
+    width: 110px;
+    height: 110px;
+  }
+
+  .hero__ring--outer {
     width: 145px;
     height: 145px;
   }
 
   .hero__symbol {
     width: 120px;
+  }
+}
+
+/* =========================
+   ACESSIBILIDADE
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__symbol-wrapper,
+  .hero__glow,
+  .hero__scroll span {
+    animation: none;
+  }
+
+  .hero__primary,
+  .hero__secondary {
+    transition: none;
   }
 }

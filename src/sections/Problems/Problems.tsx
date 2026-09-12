@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'motion/react'
 import './Problems.css'
 
 const problems = [
@@ -34,10 +35,31 @@ const problems = [
 ]
 
 function Problems() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="problems" id="problemas">
       <div className="problems__container">
-        <div className="problems__header">
+        <motion.div
+          className="problems__header"
+          initial={
+            reduceMotion
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 28 }
+          }
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.35,
+          }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.65,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="problems__eyebrow">Problemas reais</span>
 
           <h2 className="problems__title">
@@ -49,23 +71,61 @@ function Problems() {
             informações espalhadas e tarefas repetitivas, a tecnologia pode
             ajudar a organizar o trabalho de forma mais simples e eficiente.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="problems__grid">
+        <motion.div
+          className="problems__grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.12,
+          }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: reduceMotion ? 0 : 0.09,
+                delayChildren: reduceMotion ? 0 : 0.04,
+              },
+            },
+          }}
+        >
           {problems.map((problem, index) => (
-            <article className="problem-card" key={problem.title}>
+            <motion.article
+              className="problem-card"
+              key={problem.title}
+              variants={{
+                hidden: reduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : {
+                      opacity: 0,
+                      y: 24,
+                    },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: reduceMotion ? 0 : 0.55,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+            >
               <span className="problem-card__number">
                 {String(index + 1).padStart(2, '0')}
               </span>
 
-              <h3 className="problem-card__title">{problem.title}</h3>
+              <h3 className="problem-card__title">
+                {problem.title}
+              </h3>
 
               <p className="problem-card__description">
                 {problem.description}
               </p>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
