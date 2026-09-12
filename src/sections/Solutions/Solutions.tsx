@@ -1,4 +1,3 @@
-import { motion } from 'motion/react'
 import './Solutions.css'
 
 const solutions = [
@@ -131,20 +130,10 @@ function Solutions() {
   return (
     <section className="solutions" id="solucoes">
       <div className="solutions__container">
-        <motion.div
-          className="solutions__header"
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{
-            once: true,
-            amount: 0.08,
-          }}
-          transition={{
-            duration: 0.58,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <span className="solutions__eyebrow">Soluções</span>
+        <div className="solutions__header">
+          <span className="solutions__eyebrow">
+            Soluções
+          </span>
 
           <h2 className="solutions__title">
             Quando o problema é específico, a solução também pode ser.
@@ -155,24 +144,13 @@ function Solutions() {
             projeto, buscando simplificar processos, organizar informações e
             gerar mais clareza para o negócio.
           </p>
-        </motion.div>
+        </div>
 
         <div className="solutions__grid">
           {solutions.map((solution, index) => (
-            <motion.article
+            <article
               className="solution-card"
               key={solution.title}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{
-                once: true,
-                amount: 0.08,
-              }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.055,
-                ease: [0.22, 1, 0.36, 1],
-              }}
             >
               <div className="solution-card__top">
                 <span className="solution-card__number">
@@ -185,29 +163,19 @@ function Solutions() {
               </div>
 
               <div className="solution-card__content">
-                <h3 className="solution-card__title">{solution.title}</h3>
+                <h3 className="solution-card__title">
+                  {solution.title}
+                </h3>
 
                 <p className="solution-card__description">
                   {solution.description}
                 </p>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 
-        <motion.div
-          className="solutions__footer"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{
-            once: true,
-            amount: 0.15,
-          }}
-          transition={{
-            duration: 0.55,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
+        <div className="solutions__footer">
           <p className="solutions__footer-text">
             Tem uma necessidade específica e não encontrou uma solução pronta
             que realmente resolva?
@@ -216,7 +184,7 @@ function Solutions() {
           <a href="#contato" className="solutions__cta">
             Conte sua necessidade
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

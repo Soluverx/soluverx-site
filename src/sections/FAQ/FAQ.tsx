@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
 import './FAQ.css'
 
 const questions = [
@@ -41,8 +40,8 @@ const questions = [
 ]
 
 function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const reduceMotion = useReducedMotion()
+  const [openIndex, setOpenIndex] =
+    useState<number | null>(null)
 
   function toggleQuestion(index: number) {
     setOpenIndex((currentIndex) =>
@@ -53,20 +52,7 @@ function FAQ() {
   return (
     <section className="faq" id="faq">
       <div className="faq__container">
-        <motion.div
-          className="faq__header"
-          initial={
-            reduceMotion
-              ? { opacity: 1, x: 0 }
-              : { opacity: 0, x: -24 }
-          }
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.65,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
+        <div className="faq__header">
           <span className="faq__eyebrow">
             Perguntas frequentes
           </span>
@@ -79,49 +65,27 @@ function FAQ() {
             Algumas respostas para ajudar a entender como funciona o primeiro
             contato e o desenvolvimento de uma solução com a Soluverx.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="faq__list"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.12 }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: reduceMotion ? 0 : 0.07,
-              },
-            },
-          }}
-        >
+        <div className="faq__list">
           {questions.map((item, index) => {
             const isOpen = openIndex === index
 
             return (
-              <motion.article
+              <article
                 className={`faq-item ${
-                  isOpen ? 'faq-item--open' : ''
+                  isOpen
+                    ? 'faq-item--open'
+                    : ''
                 }`}
                 key={item.question}
-                variants={{
-                  hidden: reduceMotion
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 18 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      duration: reduceMotion ? 0 : 0.5,
-                      ease: [0.22, 1, 0.36, 1],
-                    },
-                  },
-                }}
               >
                 <button
                   className="faq-item__button"
                   type="button"
-                  onClick={() => toggleQuestion(index)}
+                  onClick={() =>
+                    toggleQuestion(index)
+                  }
                   aria-expanded={isOpen}
                 >
                   <span className="faq-item__question">
@@ -141,10 +105,10 @@ function FAQ() {
                     <p>{item.answer}</p>
                   </div>
                 </div>
-              </motion.article>
+              </article>
             )
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

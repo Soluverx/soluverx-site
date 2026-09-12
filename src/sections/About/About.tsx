@@ -1,4 +1,3 @@
-import { motion, useReducedMotion } from 'motion/react'
 import './About.css'
 
 const panelItems = [
@@ -23,26 +22,13 @@ const panelItems = [
 ]
 
 function About() {
-  const reduceMotion = useReducedMotion()
-
   return (
     <section className="about" id="sobre">
       <div className="about__container">
-        <motion.div
-          className="about__content"
-          initial={
-            reduceMotion
-              ? { opacity: 1, x: 0 }
-              : { opacity: 0, x: -28 }
-          }
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.7,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <span className="about__eyebrow">Sobre a Soluverx</span>
+        <div className="about__content">
+          <span className="about__eyebrow">
+            Sobre a Soluverx
+          </span>
 
           <h2 className="about__title">
             Tecnologia com proximidade, método e responsabilidade.
@@ -68,39 +54,13 @@ function About() {
               direto durante todo o desenvolvimento.
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="about__panel"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: reduceMotion ? 0 : 0.11,
-              },
-            },
-          }}
-        >
+        <div className="about__panel">
           {panelItems.map((item) => (
-            <motion.div
+            <div
               className="about__panel-item"
               key={item.number}
-              variants={{
-                hidden: reduceMotion
-                  ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: 24 },
-                visible: {
-                  opacity: 1,
-                  x: 0,
-                  transition: {
-                    duration: reduceMotion ? 0 : 0.55,
-                    ease: [0.22, 1, 0.36, 1],
-                  },
-                },
-              }}
             >
               <span className="about__panel-label">
                 {item.number}
@@ -110,9 +70,9 @@ function About() {
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
