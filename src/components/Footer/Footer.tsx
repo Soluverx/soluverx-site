@@ -1,4 +1,4 @@
-import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.png'
+import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.webp'
 import './Footer.css'
 
 function Footer() {
@@ -18,6 +18,9 @@ function Footer() {
                 src={soluverxLogo}
                 alt="Soluverx"
                 className="footer__logo-image"
+                width="330"
+                height="109"
+                loading="lazy"
               />
             </a>
 

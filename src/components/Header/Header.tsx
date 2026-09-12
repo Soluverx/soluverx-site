@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.png'
+import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.webp'
 import './Header.css'
 
 function Header() {
@@ -43,6 +43,9 @@ function Header() {
               src={soluverxLogo}
               alt="Soluverx"
               className="header__logo-image"
+              width="330"
+              height="109"
+              fetchPriority="high"
             />
           </a>
 
