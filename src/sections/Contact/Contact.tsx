@@ -1,17 +1,9 @@
 import {
-  useEffect,
-  useRef,
   useState,
   type SyntheticEvent,
 } from 'react'
-import { useForm, ValidationError } from '@formspree/react'
-import './Contact.css'
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void
-  }
-}
+import './Contact.css'
 
 type FormErrors = {
   name?: string
@@ -21,28 +13,20 @@ type FormErrors = {
   message?: string
 }
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
+
 function Contact() {
-  const [state, handleFormspreeSubmit] = useForm('mwlkzzvr')
-
   const [errors, setErrors] = useState<FormErrors>({})
-
-  const formSuccessTracked = useRef(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [succeeded, setSucceeded] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const whatsappUrl =
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
-
-  useEffect(() => {
-    if (!state.succeeded || formSuccessTracked.current) {
-      return
-    }
-
-    formSuccessTracked.current = true
-
-    window.gtag?.('event', 'form_submit_success', {
-      event_category: 'lead',
-      event_label: 'Formulário de contato',
-    })
-  }, [state.succeeded])
 
   function validateName(value: string) {
     const name = value.trim()
@@ -199,6 +183,9 @@ function Contact() {
 
     const form = event.currentTarget
 
+    setSucceeded(false)
+    setSubmitError('')
+
     if (!validateForm(form)) {
       requestAnimationFrame(() => {
         const firstInvalid = form.querySelector(
@@ -211,7 +198,43 @@ function Contact() {
       return
     }
 
-    await handleFormspreeSubmit(event)
+    setIsSubmitting(true)
+
+    try {
+      const formData = new FormData(form)
+
+      const response = await fetch(
+        'https://formspree.io/f/mwlkzzvr',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error('Falha no envio do formulário.')
+      }
+
+      setSucceeded(true)
+
+      window.gtag?.(
+        'event',
+        'form_submit_success',
+        {
+          event_category: 'lead',
+          event_label: 'Formulário de contato',
+        },
+      )
+    } catch {
+      setSubmitError(
+        'Não foi possível enviar sua mensagem agora. Tente novamente em alguns instantes ou fale conosco pelo WhatsApp.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -222,7 +245,9 @@ function Contact() {
     >
       <div className="contact__container">
         <div className="contact__content">
-          <span className="contact__eyebrow">Contato</span>
+          <span className="contact__eyebrow">
+            Contato
+          </span>
 
           <h2
             className="contact__title"
@@ -273,10 +298,14 @@ function Contact() {
               maxLength={80}
               aria-invalid={Boolean(errors.name)}
               aria-describedby={
-                errors.name ? 'name-error' : undefined
+                errors.name
+                  ? 'name-error'
+                  : undefined
               }
               onBlur={(event) => {
-                const error = validateName(event.target.value)
+                const error = validateName(
+                  event.target.value,
+                )
 
                 setErrors((current) => ({
                   ...current,
@@ -341,7 +370,10 @@ function Contact() {
           <div className="contact__row">
             <div className="contact__field">
               <label htmlFor="email">
-                E-mail <span aria-hidden="true">*</span>
+                E-mail{' '}
+                <span aria-hidden="true">
+                  *
+                </span>
               </label>
 
               <input
@@ -380,17 +412,14 @@ function Contact() {
                   {errors.email}
                 </span>
               )}
-
-              <ValidationError
-                prefix="E-mail"
-                field="email"
-                errors={state.errors}
-              />
             </div>
 
             <div className="contact__field">
               <label htmlFor="whatsapp">
-                WhatsApp <span aria-hidden="true">*</span>
+                WhatsApp{' '}
+                <span aria-hidden="true">
+                  *
+                </span>
               </label>
 
               <input
@@ -401,36 +430,43 @@ function Contact() {
                 autoComplete="tel"
                 inputMode="numeric"
                 maxLength={15}
-                aria-invalid={Boolean(errors.whatsapp)}
+                aria-invalid={Boolean(
+                  errors.whatsapp,
+                )}
                 aria-describedby={
                   errors.whatsapp
                     ? 'whatsapp-error'
                     : undefined
                 }
                 onChange={(event) => {
-                  event.target.value = formatWhatsapp(
-                    event.target.value,
-                  )
-
-                  if (errors.whatsapp) {
-                    const error = validateWhatsapp(
+                  event.target.value =
+                    formatWhatsapp(
                       event.target.value,
                     )
 
+                  if (errors.whatsapp) {
+                    const error =
+                      validateWhatsapp(
+                        event.target.value,
+                      )
+
                     setErrors((current) => ({
                       ...current,
-                      whatsapp: error || undefined,
+                      whatsapp:
+                        error || undefined,
                     }))
                   }
                 }}
                 onBlur={(event) => {
-                  const error = validateWhatsapp(
-                    event.target.value,
-                  )
+                  const error =
+                    validateWhatsapp(
+                      event.target.value,
+                    )
 
                   setErrors((current) => ({
                     ...current,
-                    whatsapp: error || undefined,
+                    whatsapp:
+                      error || undefined,
                   }))
                 }}
                 required
@@ -461,7 +497,9 @@ function Contact() {
               placeholder="Conte um pouco sobre o problema, processo ou ideia..."
               minLength={20}
               maxLength={2000}
-              aria-invalid={Boolean(errors.message)}
+              aria-invalid={Boolean(
+                errors.message,
+              )}
               aria-describedby={
                 errors.message
                   ? 'message-error'
@@ -489,12 +527,6 @@ function Contact() {
                 {errors.message}
               </span>
             )}
-
-            <ValidationError
-              prefix="Mensagem"
-              field="message"
-              errors={state.errors}
-            />
           </div>
 
           <p className="contact__required-note">
@@ -504,14 +536,14 @@ function Contact() {
           <button
             className="contact__submit"
             type="submit"
-            disabled={state.submitting}
+            disabled={isSubmitting}
           >
-            {state.submitting
+            {isSubmitting
               ? 'Enviando...'
               : 'Enviar mensagem'}
           </button>
 
-          {state.succeeded && (
+          {succeeded && (
             <p
               className="contact__success"
               role="status"
@@ -520,8 +552,13 @@ function Contact() {
             </p>
           )}
 
-          {!state.succeeded && state.errors && (
-            <ValidationError errors={state.errors} />
+          {submitError && (
+            <p
+              className="contact__error"
+              role="alert"
+            >
+              {submitError}
+            </p>
           )}
         </form>
       </div>
