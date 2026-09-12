@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import './Problems.css'
 
 const problems = [
@@ -128,7 +129,19 @@ function Problems() {
   return (
     <section className="problems" id="problemas">
       <div className="problems__container">
-        <div className="problems__header">
+        <motion.div
+          className="problems__header"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{
+            once: true,
+            amount: 0.08,
+          }}
+          transition={{
+            duration: 0.58,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="problems__eyebrow">Problemas reais</span>
 
           <h2 className="problems__title">
@@ -140,11 +153,25 @@ function Problems() {
             informações espalhadas e tarefas repetitivas, a tecnologia pode
             ajudar a organizar o trabalho de forma mais simples e eficiente.
           </p>
-        </div>
+        </motion.div>
 
         <div className="problems__grid">
           {problems.map((problem, index) => (
-            <article className="problem-card" key={problem.title}>
+            <motion.article
+              className="problem-card"
+              key={problem.title}
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{
+                once: true,
+                amount: 0.08,
+              }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.055,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
               <div className="problem-card__top">
                 <span className="problem-card__number">
                   {String(index + 1).padStart(2, '0')}
@@ -162,7 +189,7 @@ function Problems() {
                   {problem.description}
                 </p>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>

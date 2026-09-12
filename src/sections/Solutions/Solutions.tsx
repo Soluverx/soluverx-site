@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import './Solutions.css'
 
 const solutions = [
@@ -58,9 +59,9 @@ function SolutionIcon({ type }: { type: string }) {
           <rect x="9" y="29" width="30" height="10" rx="3" />
           <path d="M15 14h1" />
           <path d="M20 14h1" />
+          <path d="M34 14h1" />
           <path d="M15 34h1" />
           <path d="M20 34h1" />
-          <path d="M34 14h1" />
           <path d="M34 34h1" />
         </svg>
       )
@@ -130,7 +131,19 @@ function Solutions() {
   return (
     <section className="solutions" id="solucoes">
       <div className="solutions__container">
-        <div className="solutions__header">
+        <motion.div
+          className="solutions__header"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{
+            once: true,
+            amount: 0.08,
+          }}
+          transition={{
+            duration: 0.58,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span className="solutions__eyebrow">Soluções</span>
 
           <h2 className="solutions__title">
@@ -142,11 +155,25 @@ function Solutions() {
             projeto, buscando simplificar processos, organizar informações e
             gerar mais clareza para o negócio.
           </p>
-        </div>
+        </motion.div>
 
         <div className="solutions__grid">
           {solutions.map((solution, index) => (
-            <article className="solution-card" key={solution.title}>
+            <motion.article
+              className="solution-card"
+              key={solution.title}
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{
+                once: true,
+                amount: 0.08,
+              }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.055,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
               <div className="solution-card__top">
                 <span className="solution-card__number">
                   {String(index + 1).padStart(2, '0')}
@@ -164,9 +191,32 @@ function Solutions() {
                   {solution.description}
                 </p>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
+
+        <motion.div
+          className="solutions__footer"
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{
+            once: true,
+            amount: 0.15,
+          }}
+          transition={{
+            duration: 0.55,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <p className="solutions__footer-text">
+            Tem uma necessidade específica e não encontrou uma solução pronta
+            que realmente resolva?
+          </p>
+
+          <a href="#contato" className="solutions__cta">
+            Conte sua necessidade
+          </a>
+        </motion.div>
       </div>
     </section>
   )
