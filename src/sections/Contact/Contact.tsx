@@ -1,6 +1,17 @@
-import { useState, type SyntheticEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type SyntheticEvent,
+} from 'react'
 import { useForm, ValidationError } from '@formspree/react'
 import './Contact.css'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
 
 type FormErrors = {
   name?: string
@@ -15,8 +26,23 @@ function Contact() {
 
   const [errors, setErrors] = useState<FormErrors>({})
 
+  const formSuccessTracked = useRef(false)
+
   const whatsappUrl =
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
+
+  useEffect(() => {
+    if (!state.succeeded || formSuccessTracked.current) {
+      return
+    }
+
+    formSuccessTracked.current = true
+
+    window.gtag?.('event', 'form_submit_success', {
+      event_category: 'lead',
+      event_label: 'Formulário de contato',
+    })
+  }, [state.succeeded])
 
   function validateName(value: string) {
     const name = value.trim()
