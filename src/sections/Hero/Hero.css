@@ -8,24 +8,49 @@
 
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+
+  background: var(--color-background);
 }
 
-.hero__ambient {
+.hero::before {
+  content: '';
+
   position: absolute;
   inset: 0;
 
-  pointer-events: none;
+  z-index: -2;
+
+  background-image: url('/backgrounds/background1.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  transform: scale(1.01);
+}
+
+.hero::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
 
   background:
-    radial-gradient(
-      circle at 78% 46%,
-      rgba(37, 99, 235, 0.08),
-      transparent 28%
+    linear-gradient(
+      90deg,
+      rgba(4, 10, 28, 0.97) 0%,
+      rgba(4, 10, 28, 0.92) 24%,
+      rgba(4, 10, 28, 0.78) 45%,
+      rgba(4, 10, 28, 0.42) 68%,
+      rgba(4, 10, 28, 0.18) 100%
     ),
-    radial-gradient(
-      circle at 82% 50%,
-      rgba(6, 182, 212, 0.04),
-      transparent 20%
+    linear-gradient(
+      180deg,
+      rgba(4, 10, 28, 0.18) 0%,
+      transparent 40%,
+      rgba(4, 10, 28, 0.32) 100%
     );
 }
 
@@ -37,22 +62,16 @@
 
   margin: 0 auto;
 
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  display: flex;
   align-items: center;
 
-  gap: 72px;
-
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* =========================
-   CONTEÚDO
-========================= */
-
 .hero__content {
-  max-width: 720px;
+  width: 100%;
+  max-width: 680px;
 }
 
 .hero__eyebrow {
@@ -72,6 +91,8 @@
 .hero__title {
   max-width: 680px;
 
+  color: var(--color-white);
+
   font-size: clamp(2.8rem, 5vw, 5rem);
   font-weight: 700;
 
@@ -89,59 +110,51 @@
   line-height: 1.7;
 }
 
-/* =========================
-   BOTÕES
-========================= */
-
 .hero__actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-
   gap: 16px;
 
   margin-top: 38px;
+
+  flex-wrap: wrap;
 }
 
 .hero__primary,
 .hero__secondary {
   min-height: 48px;
 
+  padding: 0 22px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  padding: 0 22px;
 
   border-radius: var(--border-radius-sm);
 
   font-size: 0.95rem;
   font-weight: 600;
-
-  transition:
-    transform 200ms ease,
-    background-color 200ms ease,
-    border-color 200ms ease,
-    box-shadow 200ms ease;
 }
 
 .hero__primary {
   background: var(--color-blue);
   color: var(--color-white);
 
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+  box-shadow:
+    0 10px 30px rgba(37, 99, 235, 0.18),
+    0 0 30px rgba(37, 99, 235, 0.08);
 }
 
 .hero__primary:hover {
   background: #1d4ed8;
 
   transform: translateY(-2px);
-
-  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.24);
 }
 
 .hero__secondary {
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+
+  background: rgba(5, 12, 31, 0.32);
 
   color: var(--color-white);
 }
@@ -149,259 +162,78 @@
 .hero__secondary:hover {
   border-color: rgba(255, 255, 255, 0.35);
 
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
 
   transform: translateY(-2px);
 }
-
-/* =========================
-   VISUAL
-========================= */
-
-.hero__visual {
-  min-height: 520px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-}
-
-.hero__visual-stage {
-  width: 430px;
-  height: 430px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-}
-
-.hero__glow {
-  position: absolute;
-
-  width: 420px;
-  height: 420px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(37, 99, 235, 0.28) 0%,
-      rgba(6, 182, 212, 0.12) 35%,
-      transparent 72%
-    );
-
-  filter: blur(12px);
-
-  pointer-events: none;
-
-  animation: heroGlow 6s ease-in-out infinite;
-}
-
-/* =========================
-   ANÉIS
-========================= */
-
-.hero__ring {
-  position: absolute;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-}
-
-.hero__ring--inner {
-  width: 325px;
-  height: 325px;
-
-  border: 1px solid rgba(37, 99, 235, 0.1);
-}
-
-.hero__ring--outer {
-  width: 410px;
-  height: 410px;
-
-  border: 1px solid rgba(6, 182, 212, 0.05);
-}
-
-/* =========================
-   SÍMBOLO
-========================= */
-
-.hero__symbol-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-  z-index: 1;
-
-  animation: heroFloat 6s ease-in-out infinite;
-}
-
-.hero__symbol {
-  width: min(100%, 360px);
-  height: auto;
-
-  display: block;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(0 0 30px rgba(37, 99, 235, 0.18))
-    drop-shadow(0 0 48px rgba(6, 182, 212, 0.06));
-}
-
-/* =========================
-   SCROLL INDICATOR
-========================= */
-
-.hero__scroll {
-  width: 22px;
-  height: 36px;
-
-  position: absolute;
-
-  bottom: 24px;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-
-  display: flex;
-  justify-content: center;
-
-  padding-top: 7px;
-
-  opacity: 0.55;
-
-  pointer-events: none;
-}
-
-.hero__scroll span {
-  width: 3px;
-  height: 6px;
-
-  border-radius: 10px;
-
-  background: var(--color-cyan);
-
-  animation: heroScroll 1.8s ease-in-out infinite;
-}
-
-/* =========================
-   ANIMAÇÕES CSS
-========================= */
-
-@keyframes heroFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes heroGlow {
-  0%,
-  100% {
-    opacity: 0.75;
-    transform: scale(0.98);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.035);
-  }
-}
-
-@keyframes heroScroll {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-
-  25% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(11px);
-  }
-}
-
-/* =========================
-   TABLET
-========================= */
 
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
 
-    padding-top: 100px;
-    padding-bottom: 48px;
+    padding-top: 110px;
+    padding-bottom: 72px;
   }
 
-  .hero__container {
-    grid-template-columns: 1fr;
-
-    gap: 26px;
+  .hero::before {
+    background-position: 67% center;
   }
 
-  .hero__visual {
-    min-height: 180px;
+  .hero::after {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(4, 10, 28, 0.96) 0%,
+        rgba(4, 10, 28, 0.88) 52%,
+        rgba(4, 10, 28, 0.50) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(4, 10, 28, 0.18) 0%,
+        rgba(4, 10, 28, 0.28) 100%
+      );
   }
 
-  .hero__visual-stage {
-    width: 200px;
-    height: 200px;
-  }
-
-  .hero__glow {
-    width: 190px;
-    height: 190px;
-  }
-
-  .hero__ring--inner {
-    width: 145px;
-    height: 145px;
-  }
-
-  .hero__ring--outer {
-    width: 190px;
-    height: 190px;
-  }
-
-  .hero__symbol {
-    width: 160px;
-  }
-
-  .hero__scroll {
-    display: none;
+  .hero__content {
+    max-width: 620px;
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 600px) {
   .hero {
-    padding-top: 92px;
-    padding-bottom: 38px;
+    min-height: 760px;
+
+    padding-top: 104px;
+    padding-bottom: 54px;
+
+    align-items: flex-start;
+  }
+
+  .hero::before {
+    background-size: auto 100%;
+    background-position: 68% center;
+  }
+
+  .hero::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(4, 10, 28, 0.92) 0%,
+        rgba(4, 10, 28, 0.88) 46%,
+        rgba(4, 10, 28, 0.62) 72%,
+        rgba(4, 10, 28, 0.80) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(4, 10, 28, 0.94) 0%,
+        rgba(4, 10, 28, 0.72) 100%
+      );
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 18px;
+
+    font-size: 0.74rem;
   }
 
   .hero__title {
@@ -410,6 +242,8 @@
 
   .hero__text {
     margin-top: 22px;
+
+    font-size: 1rem;
   }
 
   .hero__actions {
@@ -422,52 +256,5 @@
   .hero__primary,
   .hero__secondary {
     width: 100%;
-  }
-
-  .hero__visual {
-    min-height: 145px;
-
-    margin-top: 4px;
-  }
-
-  .hero__visual-stage {
-    width: 160px;
-    height: 160px;
-  }
-
-  .hero__glow {
-    width: 145px;
-    height: 145px;
-  }
-
-  .hero__ring--inner {
-    width: 110px;
-    height: 110px;
-  }
-
-  .hero__ring--outer {
-    width: 145px;
-    height: 145px;
-  }
-
-  .hero__symbol {
-    width: 120px;
-  }
-}
-
-/* =========================
-   ACESSIBILIDADE
-========================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__symbol-wrapper,
-  .hero__glow,
-  .hero__scroll span {
-    animation: none;
-  }
-
-  .hero__primary,
-  .hero__secondary {
-    transition: none;
   }
 }
