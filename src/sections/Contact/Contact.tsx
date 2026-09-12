@@ -1,7 +1,14 @@
 import {
+  useEffect,
+  useRef,
   useState,
   type SyntheticEvent,
 } from 'react'
+
+import {
+  useForm,
+  ValidationError,
+} from '@formspree/react'
 
 import './Contact.css'
 
@@ -20,13 +27,36 @@ declare global {
 }
 
 function Contact() {
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [succeeded, setSucceeded] = useState(false)
-  const [submitError, setSubmitError] = useState('')
+  const [state, handleFormspreeSubmit] =
+    useForm('mwlkzzvr')
+
+  const [errors, setErrors] =
+    useState<FormErrors>({})
+
+  const formSuccessTracked = useRef(false)
 
   const whatsappUrl =
     'https://wa.me/5533998551827?text=Olá,%20vim%20pelo%20site%20da%20Soluverx%20e%20gostaria%20de%20falar%20sobre%20um%20projeto.'
+
+  useEffect(() => {
+    if (
+      !state.succeeded ||
+      formSuccessTracked.current
+    ) {
+      return
+    }
+
+    formSuccessTracked.current = true
+
+    window.gtag?.(
+      'event',
+      'form_submit_success',
+      {
+        event_category: 'lead',
+        event_label: 'Formulário de contato',
+      },
+    )
+  }, [state.succeeded])
 
   function validateName(value: string) {
     const name = value.trim()
@@ -75,7 +105,8 @@ function Contact() {
       return 'Informe seu e-mail.'
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
     if (!emailRegex.test(email)) {
       return 'Digite um e-mail válido.'
@@ -91,7 +122,10 @@ function Contact() {
       return 'Informe seu WhatsApp.'
     }
 
-    if (digits.length !== 10 && digits.length !== 11) {
+    if (
+      digits.length !== 10 &&
+      digits.length !== 11
+    ) {
       return 'Informe DDD + número com 10 ou 11 dígitos.'
     }
 
@@ -123,7 +157,9 @@ function Contact() {
   }
 
   function formatWhatsapp(value: string) {
-    const digits = value.replace(/\D/g, '').slice(0, 11)
+    const digits = value
+      .replace(/\D/g, '')
+      .slice(0, 11)
 
     if (digits.length <= 2) {
       return digits
@@ -146,14 +182,30 @@ function Contact() {
     )}-${digits.slice(7)}`
   }
 
-  function validateForm(form: HTMLFormElement) {
+  function validateForm(
+    form: HTMLFormElement,
+  ) {
     const formData = new FormData(form)
 
-    const name = String(formData.get('name') || '')
-    const company = String(formData.get('company') || '')
-    const email = String(formData.get('email') || '')
-    const whatsapp = String(formData.get('whatsapp') || '')
-    const message = String(formData.get('message') || '')
+    const name = String(
+      formData.get('name') || '',
+    )
+
+    const company = String(
+      formData.get('company') || '',
+    )
+
+    const email = String(
+      formData.get('email') || '',
+    )
+
+    const whatsapp = String(
+      formData.get('whatsapp') || '',
+    )
+
+    const message = String(
+      formData.get('message') || '',
+    )
 
     const newErrors: FormErrors = {
       name: validateName(name),
@@ -164,7 +216,8 @@ function Contact() {
     }
 
     Object.keys(newErrors).forEach((key) => {
-      const typedKey = key as keyof FormErrors
+      const typedKey =
+        key as keyof FormErrors
 
       if (!newErrors[typedKey]) {
         delete newErrors[typedKey]
@@ -173,7 +226,9 @@ function Contact() {
 
     setErrors(newErrors)
 
-    return Object.keys(newErrors).length === 0
+    return (
+      Object.keys(newErrors).length === 0
+    )
   }
 
   async function handleSubmit(
@@ -183,14 +238,12 @@ function Contact() {
 
     const form = event.currentTarget
 
-    setSucceeded(false)
-    setSubmitError('')
-
     if (!validateForm(form)) {
       requestAnimationFrame(() => {
-        const firstInvalid = form.querySelector(
-          '[aria-invalid="true"]',
-        ) as HTMLElement | null
+        const firstInvalid =
+          form.querySelector(
+            '[aria-invalid="true"]',
+          ) as HTMLElement | null
 
         firstInvalid?.focus()
       })
@@ -198,43 +251,7 @@ function Contact() {
       return
     }
 
-    setIsSubmitting(true)
-
-    try {
-      const formData = new FormData(form)
-
-      const response = await fetch(
-        'https://formspree.io/f/mwlkzzvr',
-        {
-          method: 'POST',
-          body: formData,
-          headers: {
-            Accept: 'application/json',
-          },
-        },
-      )
-
-      if (!response.ok) {
-        throw new Error('Falha no envio do formulário.')
-      }
-
-      setSucceeded(true)
-
-      window.gtag?.(
-        'event',
-        'form_submit_success',
-        {
-          event_category: 'lead',
-          event_label: 'Formulário de contato',
-        },
-      )
-    } catch {
-      setSubmitError(
-        'Não foi possível enviar sua mensagem agora. Tente novamente em alguns instantes ou fale conosco pelo WhatsApp.',
-      )
-    } finally {
-      setIsSubmitting(false)
-    }
+    await handleFormspreeSubmit(event)
   }
 
   return (
@@ -257,8 +274,10 @@ function Contact() {
           </h2>
 
           <p className="contact__intro">
-            Explique sua necessidade, dificuldade ou ideia. A partir disso,
-            analisamos o cenário e avaliamos a melhor forma de ajudar.
+            Explique sua necessidade, dificuldade ou
+            ideia. A partir disso, analisamos o
+            cenário e avaliamos a melhor forma de
+            ajudar.
           </p>
 
           <div className="contact__direct">
@@ -285,7 +304,10 @@ function Contact() {
         >
           <div className="contact__field">
             <label htmlFor="name">
-              Nome <span aria-hidden="true">*</span>
+              Nome{' '}
+              <span aria-hidden="true">
+                *
+              </span>
             </label>
 
             <input
@@ -296,20 +318,24 @@ function Contact() {
               autoComplete="name"
               minLength={2}
               maxLength={80}
-              aria-invalid={Boolean(errors.name)}
+              aria-invalid={Boolean(
+                errors.name,
+              )}
               aria-describedby={
                 errors.name
                   ? 'name-error'
                   : undefined
               }
               onBlur={(event) => {
-                const error = validateName(
-                  event.target.value,
-                )
+                const error =
+                  validateName(
+                    event.target.value,
+                  )
 
                 setErrors((current) => ({
                   ...current,
-                  name: error || undefined,
+                  name:
+                    error || undefined,
                 }))
               }}
               required
@@ -338,20 +364,24 @@ function Contact() {
               placeholder="Nome da empresa"
               autoComplete="organization"
               maxLength={120}
-              aria-invalid={Boolean(errors.company)}
+              aria-invalid={Boolean(
+                errors.company,
+              )}
               aria-describedby={
                 errors.company
                   ? 'company-error'
                   : undefined
               }
               onBlur={(event) => {
-                const error = validateCompany(
-                  event.target.value,
-                )
+                const error =
+                  validateCompany(
+                    event.target.value,
+                  )
 
                 setErrors((current) => ({
                   ...current,
-                  company: error || undefined,
+                  company:
+                    error || undefined,
                 }))
               }}
             />
@@ -384,20 +414,24 @@ function Contact() {
                 autoComplete="email"
                 inputMode="email"
                 maxLength={150}
-                aria-invalid={Boolean(errors.email)}
+                aria-invalid={Boolean(
+                  errors.email,
+                )}
                 aria-describedby={
                   errors.email
                     ? 'email-error'
                     : undefined
                 }
                 onBlur={(event) => {
-                  const error = validateEmail(
-                    event.target.value,
-                  )
+                  const error =
+                    validateEmail(
+                      event.target.value,
+                    )
 
                   setErrors((current) => ({
                     ...current,
-                    email: error || undefined,
+                    email:
+                      error || undefined,
                   }))
                 }}
                 required
@@ -412,6 +446,12 @@ function Contact() {
                   {errors.email}
                 </span>
               )}
+
+              <ValidationError
+                prefix="E-mail"
+                field="email"
+                errors={state.errors}
+              />
             </div>
 
             <div className="contact__field">
@@ -444,17 +484,22 @@ function Contact() {
                       event.target.value,
                     )
 
-                  if (errors.whatsapp) {
+                  if (
+                    errors.whatsapp
+                  ) {
                     const error =
                       validateWhatsapp(
                         event.target.value,
                       )
 
-                    setErrors((current) => ({
-                      ...current,
-                      whatsapp:
-                        error || undefined,
-                    }))
+                    setErrors(
+                      (current) => ({
+                        ...current,
+                        whatsapp:
+                          error ||
+                          undefined,
+                      }),
+                    )
                   }
                 }}
                 onBlur={(event) => {
@@ -487,7 +532,9 @@ function Contact() {
           <div className="contact__field">
             <label htmlFor="message">
               O que você precisa resolver?{' '}
-              <span aria-hidden="true">*</span>
+              <span aria-hidden="true">
+                *
+              </span>
             </label>
 
             <textarea
@@ -506,13 +553,15 @@ function Contact() {
                   : undefined
               }
               onBlur={(event) => {
-                const error = validateMessage(
-                  event.target.value,
-                )
+                const error =
+                  validateMessage(
+                    event.target.value,
+                  )
 
                 setErrors((current) => ({
                   ...current,
-                  message: error || undefined,
+                  message:
+                    error || undefined,
                 }))
               }}
               required
@@ -527,6 +576,12 @@ function Contact() {
                 {errors.message}
               </span>
             )}
+
+            <ValidationError
+              prefix="Mensagem"
+              field="message"
+              errors={state.errors}
+            />
           </div>
 
           <p className="contact__required-note">
@@ -536,30 +591,29 @@ function Contact() {
           <button
             className="contact__submit"
             type="submit"
-            disabled={isSubmitting}
+            disabled={state.submitting}
           >
-            {isSubmitting
+            {state.submitting
               ? 'Enviando...'
               : 'Enviar mensagem'}
           </button>
 
-          {succeeded && (
+          {state.succeeded && (
             <p
               className="contact__success"
               role="status"
             >
-              Mensagem enviada com sucesso. Em breve entraremos em contato.
+              Mensagem enviada com sucesso. Em
+              breve entraremos em contato.
             </p>
           )}
 
-          {submitError && (
-            <p
-              className="contact__error"
-              role="alert"
-            >
-              {submitError}
-            </p>
-          )}
+          {!state.succeeded &&
+            state.errors && (
+              <ValidationError
+                errors={state.errors}
+              />
+            )}
         </form>
       </div>
     </section>
