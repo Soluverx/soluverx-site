@@ -1,4 +1,3 @@
-import { motion } from 'motion/react'
 import './Problems.css'
 
 const problems = [
@@ -129,20 +128,10 @@ function Problems() {
   return (
     <section className="problems" id="problemas">
       <div className="problems__container">
-        <motion.div
-          className="problems__header"
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{
-            once: true,
-            amount: 0.08,
-          }}
-          transition={{
-            duration: 0.58,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <span className="problems__eyebrow">Problemas reais</span>
+        <div className="problems__header">
+          <span className="problems__eyebrow">
+            Problemas reais
+          </span>
 
           <h2 className="problems__title">
             Nem todo problema precisa de mais uma planilha.
@@ -153,24 +142,13 @@ function Problems() {
             informações espalhadas e tarefas repetitivas, a tecnologia pode
             ajudar a organizar o trabalho de forma mais simples e eficiente.
           </p>
-        </motion.div>
+        </div>
 
         <div className="problems__grid">
           {problems.map((problem, index) => (
-            <motion.article
+            <article
               className="problem-card"
               key={problem.title}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{
-                once: true,
-                amount: 0.08,
-              }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.055,
-                ease: [0.22, 1, 0.36, 1],
-              }}
             >
               <div className="problem-card__top">
                 <span className="problem-card__number">
@@ -183,13 +161,15 @@ function Problems() {
               </div>
 
               <div className="problem-card__content">
-                <h3 className="problem-card__title">{problem.title}</h3>
+                <h3 className="problem-card__title">
+                  {problem.title}
+                </h3>
 
                 <p className="problem-card__description">
                   {problem.description}
                 </p>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>
