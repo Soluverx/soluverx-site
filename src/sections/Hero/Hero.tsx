@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import './Hero.css'
 
 type IconProps = {
@@ -89,6 +90,120 @@ function AlertIcon({ className }: IconProps) {
 }
 
 function Hero() {
+  const dashboardRef = useRef<HTMLDivElement>(null)
+  const ordersRef = useRef<HTMLElement>(null)
+  const productionRef = useRef<HTMLElement>(null)
+  const receivableRef = useRef<HTMLElement>(null)
+  const pendingRef = useRef<HTMLElement>(null)
+  const growthRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const dashboard = dashboardRef.current
+
+    if (!dashboard) {
+      return
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+
+    const setFinalValues = () => {
+      if (ordersRef.current) ordersRef.current.textContent = '38'
+      if (productionRef.current) productionRef.current.textContent = '82%'
+      if (receivableRef.current) receivableRef.current.textContent = 'R$ 6.240'
+      if (pendingRef.current) pendingRef.current.textContent = '3'
+      if (growthRef.current) growthRef.current.textContent = '+18%'
+      dashboard.classList.add('hero__dashboard--animated')
+    }
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      setFinalValues()
+      return
+    }
+
+    let animationFrame = 0
+    let started = false
+
+    const animateDashboard = () => {
+      if (started) {
+        return
+      }
+
+      started = true
+      dashboard.classList.add('hero__dashboard--animated')
+
+      const duration = 1150
+      const start = performance.now()
+
+      const easeOutCubic = (progress: number) =>
+        1 - Math.pow(1 - progress, 3)
+
+      const update = (now: number) => {
+        const rawProgress = Math.min((now - start) / duration, 1)
+        const progress = easeOutCubic(rawProgress)
+
+        const orders = Math.round(38 * progress)
+        const production = Math.round(82 * progress)
+        const receivable = Math.round(6240 * progress)
+        const pending = Math.round(3 * progress)
+        const growth = Math.round(18 * progress)
+
+        if (ordersRef.current) {
+          ordersRef.current.textContent = String(orders)
+        }
+
+        if (productionRef.current) {
+          productionRef.current.textContent = `${production}%`
+        }
+
+        if (receivableRef.current) {
+          receivableRef.current.textContent = `R$ ${receivable.toLocaleString(
+            'pt-BR',
+          )}`
+        }
+
+        if (pendingRef.current) {
+          pendingRef.current.textContent = String(pending)
+        }
+
+        if (growthRef.current) {
+          growthRef.current.textContent = `+${growth}%`
+        }
+
+        if (rawProgress < 1) {
+          animationFrame = requestAnimationFrame(update)
+        }
+      }
+
+      animationFrame = requestAnimationFrame(update)
+    }
+
+    const isMobile = window.matchMedia('(max-width: 760px)').matches
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          return
+        }
+
+        animateDashboard()
+        observer.disconnect()
+      },
+      {
+        threshold: isMobile ? 0.08 : 0.32,
+        rootMargin: isMobile ? '0px 0px -4% 0px' : '0px 0px -8% 0px',
+      },
+    )
+
+    observer.observe(dashboard)
+
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(animationFrame)
+    }
+  }, [])
+
   return (
     <section className="hero" id="inicio">
       <div className="hero__container">
@@ -123,8 +238,14 @@ function Hero() {
 
         <div
           className="hero__visual"
+          role="group"
           aria-label="Representação visual de informações espalhadas convergindo para uma visão organizada"
         >
+          <div className="hero__mobile-context">
+            <span className="hero__mobile-context-kicker">Talvez hoje isso esteja assim</span>
+            <p>Informações importantes espalhadas entre ferramentas, arquivos e tarefas manuais.</p>
+          </div>
+
           <div className="hero__sources">
             <div className="hero__source-card hero__source-card--one">
               <span className="hero__source-icon hero__source-icon--excel">
@@ -144,7 +265,7 @@ function Hero() {
               <span className="hero__source-copy">
                 <span className="hero__source-type">WhatsApp</span>
                 <strong>Pedidos no WhatsApp</strong>
-                <small>Mensagens soltas</small>
+                <small>Alterações e pedidos se perdem nas conversas</small>
               </span>
             </div>
 
@@ -172,33 +293,80 @@ function Hero() {
           </div>
 
           <div className="hero__connections" aria-hidden="true">
-            <svg viewBox="0 0 360 430" preserveAspectRatio="none">
+            <svg
+              className="hero__connection-map"
+              viewBox="0 0 760 500"
+              preserveAspectRatio="none"
+            >
               <defs>
-                <linearGradient id="heroFlowGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.14" />
-                  <stop offset="55%" stopColor="#38bdf8" stopOpacity="0.82" />
-                  <stop offset="100%" stopColor="#2563eb" stopOpacity="0.95" />
+                <linearGradient
+                  id="heroConnectionGradient"
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="0"
+                >
+                  <stop offset="0%" stopColor="#2563eb" stopOpacity="0.16" />
+                  <stop offset="64%" stopColor="#0ea5e9" stopOpacity="0.58" />
+                  <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.9" />
                 </linearGradient>
-                <filter id="heroFlowGlow" x="-40%" y="-40%" width="180%" height="180%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
               </defs>
 
-              <path d="M0 44 C118 44 148 210 300 210" />
-              <path d="M0 145 C116 145 150 210 300 210" />
-              <path d="M0 282 C116 282 150 210 300 210" />
-              <path d="M0 385 C118 385 148 210 300 210" />
+              <path
+                className="hero__connection-line hero__connection-line--outer"
+                d="M244 88 C286 88 300 180 336 236"
+              />
+              <path
+                className="hero__connection-line"
+                d="M244 190 C289 190 308 218 336 244"
+              />
+              <path
+                className="hero__connection-line"
+                d="M244 292 C289 292 308 271 336 256"
+              />
+              <path
+                className="hero__connection-line hero__connection-line--outer"
+                d="M244 394 C286 394 300 320 336 264"
+              />
 
-              <circle cx="301" cy="210" r="5" />
-              <path className="hero__connection-input" d="M307 210 C325 210 337 210 354 210" />
+              <circle
+                className="hero__connection-node-ring"
+                cx="340"
+                cy="250"
+                r="8"
+              />
+              <circle
+                className="hero__connection-node"
+                cx="340"
+                cy="250"
+                r="3.2"
+              />
+
+              <path
+                className="hero__connection-output"
+                d="M348 250 H382"
+              />
+              <circle
+                className="hero__connection-end"
+                cx="384"
+                cy="250"
+                r="2.8"
+              />
             </svg>
           </div>
 
-          <div className="hero__dashboard">
+          <div className="hero__mobile-transition" aria-hidden="true">
+            <span className="hero__mobile-transition-line" />
+            <span className="hero__mobile-transition-label">Organizando as informações</span>
+            <span className="hero__mobile-transition-arrow">↓</span>
+          </div>
+
+          <div className="hero__mobile-result">
+            <span className="hero__mobile-result-kicker">Uma possibilidade</span>
+            <strong>Tudo que importa em uma visão.</strong>
+          </div>
+
+          <div className="hero__dashboard" ref={dashboardRef}>
             <div className="hero__dashboard-head">
               <div className="hero__dashboard-title-wrap">
                 <span className="hero__dashboard-icon">
@@ -226,7 +394,7 @@ function Hero() {
                 </span>
                 <div>
                   <span>Pedidos hoje</span>
-                  <strong>38</strong>
+                  <strong ref={ordersRef}>0</strong>
                 </div>
               </div>
 
@@ -236,17 +404,17 @@ function Hero() {
                 </span>
                 <div>
                   <span>Produção</span>
-                  <strong>82%</strong>
+                  <strong ref={productionRef}>0%</strong>
                 </div>
               </div>
 
-              <div className="hero__metric">
+              <div className="hero__metric hero__metric--money">
                 <span className="hero__metric-icon hero__metric-icon--sky">
                   <CoinIcon />
                 </span>
                 <div>
                   <span>A receber</span>
-                  <strong>R$ 6.240</strong>
+                  <strong ref={receivableRef}>R$ 0</strong>
                 </div>
               </div>
 
@@ -256,7 +424,7 @@ function Hero() {
                 </span>
                 <div>
                   <span>Pendências</span>
-                  <strong>3</strong>
+                  <strong ref={pendingRef}>0</strong>
                 </div>
               </div>
             </div>
@@ -267,7 +435,7 @@ function Hero() {
                   <span>Movimento</span>
                   <strong>Últimos 7 dias</strong>
                 </div>
-                <span className="hero__chart-positive">+18%</span>
+                <span className="hero__chart-positive" ref={growthRef}>+0%</span>
               </div>
 
               <svg viewBox="0 0 320 104" role="img" aria-label="Gráfico ilustrativo de evolução">
@@ -283,6 +451,7 @@ function Hero() {
                 />
                 <path
                   className="hero__chart-line"
+                  pathLength="1"
                   d="M0 90 C24 80 39 64 60 67 C85 70 91 78 115 68 C137 59 145 39 170 42 C196 45 201 56 225 49 C250 42 254 20 280 21 C296 21 308 17 320 13"
                 />
               </svg>

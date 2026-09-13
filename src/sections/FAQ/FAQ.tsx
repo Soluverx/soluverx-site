@@ -51,6 +51,7 @@ const faqItems: FAQItem[] = [
 
 function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [showAllMobile, setShowAllMobile] = useState(false)
 
   return (
     <section className="faq" id="faq">
@@ -69,7 +70,7 @@ function FAQ() {
 
             return (
               <article
-                className={`faq__item${isOpen ? ' faq__item--open' : ''}`}
+                className={`faq__item${isOpen ? ' faq__item--open' : ''}${index >= 4 && !showAllMobile ? ' faq__item--mobile-hidden' : ''}`}
                 key={item.question}
               >
                 <button
@@ -109,6 +110,16 @@ function FAQ() {
             )
           })}
         </div>
+
+        <button
+          className="faq__mobile-more"
+          type="button"
+          aria-expanded={showAllMobile}
+          onClick={() => setShowAllMobile((current) => !current)}
+        >
+          {showAllMobile ? 'Mostrar menos dúvidas' : 'Ver mais dúvidas'}
+          <span aria-hidden="true">{showAllMobile ? '−' : '+'}</span>
+        </button>
       </div>
     </section>
   )

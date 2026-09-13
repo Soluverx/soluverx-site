@@ -291,7 +291,7 @@
 
 @media (max-width: 640px) {
   .inclusion {
-    padding: 78px 0;
+    padding: 58px 0 64px;
   }
 
   .inclusion::before {
@@ -299,7 +299,7 @@
   }
 
   .inclusion__container {
-    gap: 42px;
+    gap: 30px;
   }
 
   .inclusion__title {
@@ -307,12 +307,13 @@
   }
 
   .inclusion__text {
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: 0.95rem;
   }
 
   .inclusion__note {
-    margin-top: 24px;
+    margin-top: 20px;
+    padding-top: 18px;
   }
 
   .inclusion__visual {
@@ -329,7 +330,7 @@
     position: static;
     display: flex;
     flex-wrap: wrap;
-    gap: 9px;
+    gap: 8px;
   }
 
   .inclusion__friction {
@@ -342,11 +343,16 @@
 
   .inclusion__core {
     width: 100%;
-    min-height: 145px;
-    margin-top: 18px;
+    min-height: 136px;
+    margin-top: 14px;
     position: relative;
     top: auto;
     right: auto;
     transform: none;
   }
+}
+
+
+@media (max-width: 700px) {
+  .inclusion { display: none; }
 }

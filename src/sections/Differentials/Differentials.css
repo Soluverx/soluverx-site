@@ -533,3 +533,8 @@
     transform: none;
   }
 }
+
+
+@media (max-width: 700px) {
+  .differentials { display: none; }
+}

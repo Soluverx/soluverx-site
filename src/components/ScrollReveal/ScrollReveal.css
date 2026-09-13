@@ -1,38 +1,39 @@
 :root {
   --reveal-duration: 700ms;
   --reveal-fade-duration: 540ms;
-  --reveal-distance: 22px;
+  --reveal-distance: 24px;
   --reveal-easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal-ready [data-reveal] {
   opacity: 0;
-  will-change: opacity, transform;
+  translate: 0 0;
+  will-change: opacity, translate;
   transition:
     opacity var(--reveal-fade-duration) ease var(--reveal-delay, 0ms),
-    transform var(--reveal-duration) var(--reveal-easing)
+    translate var(--reveal-duration) var(--reveal-easing)
       var(--reveal-delay, 0ms);
 }
 
 .reveal-ready [data-reveal='up'] {
-  transform: translate3d(0, var(--reveal-distance), 0);
+  translate: 0 var(--reveal-distance);
 }
 
 .reveal-ready [data-reveal='left'] {
-  transform: translate3d(calc(var(--reveal-distance) * -1), 0, 0);
+  translate: calc(var(--reveal-distance) * -1) 0;
 }
 
 .reveal-ready [data-reveal='right'] {
-  transform: translate3d(var(--reveal-distance), 0, 0);
+  translate: var(--reveal-distance) 0;
 }
 
 .reveal-ready [data-reveal='fade'] {
-  transform: none;
+  translate: 0 0;
 }
 
 .reveal-ready [data-reveal].is-revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  translate: 0 0;
   will-change: auto;
 }
 
@@ -50,16 +51,16 @@
 
 .reveal-ready [data-reveal-stagger] > * {
   opacity: 0;
-  transform: translate3d(0, 16px, 0);
-  will-change: opacity, transform;
+  translate: 0 16px;
+  will-change: opacity, translate;
   transition:
     opacity 500ms ease,
-    transform 640ms var(--reveal-easing);
+    translate 640ms var(--reveal-easing);
 }
 
 .reveal-ready [data-reveal-stagger].is-revealed > * {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  translate: 0 0;
   will-change: auto;
 }
 
@@ -99,7 +100,7 @@
   .reveal-ready [data-reveal],
   .reveal-ready [data-reveal-stagger] > * {
     opacity: 1;
-    transform: none;
+    translate: 0 0;
     transition: none;
     will-change: auto;
   }

@@ -121,10 +121,16 @@ const solutions: Solution[] = [
 
 function Solutions() {
   const [openId, setOpenId] = useState<SolutionId | null>(null)
+  const [mobileId, setMobileId] = useState<SolutionId>('custom')
+  const [showMoreMobile, setShowMoreMobile] = useState(false)
 
   function toggleSolution(id: SolutionId) {
     setOpenId((current) => (current === id ? null : id))
   }
+
+  const mobileSolution = solutions.find((solution) => solution.id === mobileId) ?? solutions[0]
+  const primaryMobileSolutions = solutions.slice(0, 3)
+  const extraMobileSolutions = solutions.slice(3)
 
   return (
     <section className="solutions" id="solucoes">
@@ -144,6 +150,68 @@ function Solutions() {
             Nem todo problema precisa do mesmo tipo de software. Dependendo da
             necessidade, a solução pode ser pequena e pontual ou evoluir para
             algo mais completo.
+          </p>
+        </div>
+
+        <div className="solutions__mobile">
+          <div className="solutions__mobile-tabs" role="tablist" aria-label="Tipos de solução">
+            {primaryMobileSolutions.map((solution) => (
+              <button
+                key={solution.id}
+                type="button"
+                role="tab"
+                aria-selected={mobileId === solution.id}
+                className={mobileId === solution.id ? 'is-active' : ''}
+                onClick={() => setMobileId(solution.id)}
+              >
+                {solution.title.replace('Sistemas sob medida', 'Sistema')}
+              </button>
+            ))}
+          </div>
+
+          <article className="solutions__mobile-card">
+            <span className="solutions__icon">{mobileSolution.icon}</span>
+            <span className="solutions__mobile-kicker">Pode fazer sentido quando</span>
+            <h3>{mobileSolution.title}</h3>
+            <p>{mobileSolution.description}</p>
+
+            <div className="solutions__mobile-example">
+              <span>Na prática</span>
+              <p>{mobileSolution.when}</p>
+            </div>
+          </article>
+
+          <button
+            className="solutions__mobile-more"
+            type="button"
+            aria-expanded={showMoreMobile}
+            onClick={() => setShowMoreMobile((current) => !current)}
+          >
+            {showMoreMobile ? 'Ocultar outras possibilidades' : 'Ver outras possibilidades'}
+            <span aria-hidden="true">{showMoreMobile ? '−' : '+'}</span>
+          </button>
+
+          {showMoreMobile && (
+            <div className="solutions__mobile-extra">
+              {extraMobileSolutions.map((solution) => (
+                <button
+                  key={solution.id}
+                  type="button"
+                  onClick={() => {
+                    setMobileId(solution.id)
+                    setShowMoreMobile(false)
+                  }}
+                >
+                  <span className="solutions__icon">{solution.icon}</span>
+                  <span>{solution.title}</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="solutions__mobile-note">
+            Você não precisa escolher uma dessas opções antes de falar com a gente.
           </p>
         </div>
 
@@ -168,7 +236,6 @@ function Solutions() {
                 >
                   <span className="solutions__card-top">
                     <span className="solutions__icon">{solution.icon}</span>
-
                     <span className="solutions__toggle" aria-hidden="true">
                       <span />
                       <span />
@@ -193,9 +260,7 @@ function Solutions() {
                   hidden={!isOpen}
                 >
                   <div className="solutions__detail">
-                    <span className="solutions__detail-label">
-                      Quando isso acontece
-                    </span>
+                    <span className="solutions__detail-label">Quando isso acontece</span>
                     <p>{solution.when}</p>
                   </div>
 
@@ -207,9 +272,7 @@ function Solutions() {
                   </div>
 
                   <div className="solutions__detail solutions__detail--outcome">
-                    <span className="solutions__detail-label">
-                      O que pode fazer sentido
-                    </span>
+                    <span className="solutions__detail-label">O que pode fazer sentido</span>
                     <p>{solution.outcome}</p>
                   </div>
                 </div>
@@ -219,14 +282,9 @@ function Solutions() {
         </div>
 
         <div className="solutions__closing" data-reveal="up" data-reveal-delay="1">
-          <span className="solutions__closing-mark" aria-hidden="true">
-            ?
-          </span>
+          <span className="solutions__closing-mark" aria-hidden="true">?</span>
           <p>
-            <strong>
-              Você não precisa saber qual dessas soluções precisa antes de falar
-              com a gente.
-            </strong>{' '}
+            <strong>Você não precisa saber qual dessas soluções precisa antes de falar com a gente.</strong>{' '}
             Conte o que está acontecendo e começamos pelo problema.
           </p>
           <a href="#contato">Conte o que está dando trabalho</a>

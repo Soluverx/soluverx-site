@@ -44,6 +44,7 @@ function Inclusion() {
           className="inclusion__visual"
           data-reveal="right"
           data-reveal-delay="1"
+          role="group"
           aria-label="Exemplos de pequenas tarefas que podem ser melhoradas"
         >
           <div className="inclusion__visual-glow" aria-hidden="true" />

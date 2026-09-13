@@ -3,6 +3,9 @@ import './Footer.css'
 
 function Footer() {
   const currentYear = new Date().getFullYear()
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
+  const isHomePage = normalizedPath === '/'
+  const homePrefix = isHomePage ? '' : '/'
 
   return (
     <footer className="footer">
@@ -10,7 +13,7 @@ function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <a
-              href="#inicio"
+              href={`${homePrefix}#inicio`}
               className="footer__logo"
               aria-label="Soluverx - Início"
             >
@@ -33,21 +36,19 @@ function Footer() {
             <div className="footer__column">
               <span className="footer__label">Navegação</span>
 
-              <a href="#solucoes">Soluções</a>
-              <a href="#processo">Como trabalhamos</a>
-              <a href="#sobre">Sobre</a>
-              <a href="#faq">FAQ</a>
+              <a href={`${homePrefix}#solucoes`}>Soluções</a>
+              <a href={`${homePrefix}#processo`}>Como trabalhamos</a>
+              <a href={`${homePrefix}#sobre`}>Sobre</a>
+              <a href={`${homePrefix}#faq`}>FAQ</a>
             </div>
           </div>
         </div>
 
         <div className="footer__bottom">
-          <p>
-            © {currentYear} Soluverx. Todos os direitos reservados.
-          </p>
+          <p>© {currentYear} Soluverx. Todos os direitos reservados.</p>
 
           <a
-            href="#privacidade"
+            href="/privacidade"
             className="footer__privacy"
             aria-label="Política de Privacidade"
           >

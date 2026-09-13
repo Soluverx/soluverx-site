@@ -52,6 +52,7 @@ function Contact() {
   const [state, handleSubmit] = useForm('mwlkzzvr')
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [showMobileForm, setShowMobileForm] = useState(false)
   const trackedSuccessRef = useRef(false)
 
   useEffect(() => {
@@ -165,9 +166,28 @@ function Contact() {
               </a>
             </div>
           </div>
+
+          <div className="contact__mobile-actions">
+            <a href={whatsappUrl} target="_blank" rel="noreferrer">
+              Conversar pelo WhatsApp
+              <span aria-hidden="true">→</span>
+            </a>
+
+            <button
+              type="button"
+              aria-expanded={showMobileForm}
+              onClick={() => setShowMobileForm((current) => !current)}
+            >
+              {showMobileForm ? 'Ocultar formulário' : 'Prefiro enviar pelo formulário'}
+            </button>
+          </div>
         </div>
 
-        <div className="contact__form-wrap" data-reveal="right" data-reveal-delay="1">
+        <div
+          className={`contact__form-wrap${showMobileForm ? ' contact__form-wrap--mobile-open' : ''}`}
+          data-reveal="right"
+          data-reveal-delay="1"
+        >
           {state.succeeded ? (
             <div className="contact__success" role="status">
               <span className="contact__success-icon" aria-hidden="true">

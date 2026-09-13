@@ -157,6 +157,7 @@ function Differentials() {
 
         <div
           className="differentials__manifesto"
+          role="group"
           aria-label="Princípios de trabalho"
           ref={manifestoRef}
         >

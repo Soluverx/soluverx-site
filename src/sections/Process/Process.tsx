@@ -34,6 +34,25 @@ const steps = [
   },
 ]
 
+
+const mobileSteps = [
+  {
+    number: '01',
+    title: 'Você conta o problema',
+    text: 'Não precisa chegar sabendo qual tecnologia precisa.',
+  },
+  {
+    number: '02',
+    title: 'Entendemos e desenhamos o caminho',
+    text: 'Avaliamos o contexto e organizamos o que realmente faz sentido construir.',
+  },
+  {
+    number: '03',
+    title: 'Construímos e entregamos',
+    text: 'Desenvolvimento próximo, validação e orientação na entrega.',
+  },
+]
+
 function Process() {
   const journeyRef = useRef<HTMLDivElement | null>(null)
 
@@ -84,6 +103,23 @@ function Process() {
             realmente faz sentido construir.
           </p>
         </header>
+
+        <div className="process__mobile">
+          {mobileSteps.map((step) => (
+            <article className="process__mobile-step" key={step.number}>
+              <span>{step.number}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            </article>
+          ))}
+
+          <div className="process__mobile-closing">
+            <span>Clareza antes de complexidade.</span>
+            <a href="#contato">Quero conversar <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
 
         <div className="process__journey" ref={journeyRef}>
           <div className="process__axis-base" aria-hidden="true" />

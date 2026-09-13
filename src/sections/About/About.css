@@ -362,3 +362,127 @@
     transform: none;
   }
 }
+
+
+.about__mobile-trust,
+.about__mobile-values {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .about {
+    padding: 52px 0 50px;
+  }
+
+  .about__header,
+  .about__pillars {
+    display: none;
+  }
+
+  .about__mobile-trust {
+    display: block;
+  }
+
+  .about__mobile-trust h2 {
+    margin-top: 14px;
+    color: #f8fafc;
+    font-size: clamp(2rem, 9.8vw, 2.7rem);
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+  }
+
+  .about__mobile-trust p {
+    margin-top: 14px;
+    color: rgba(203, 213, 225, 0.72);
+    font-size: 0.89rem;
+    line-height: 1.56;
+  }
+
+  .about__founder {
+    margin-top: 24px;
+    padding: 12px;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .about__founder-image-wrap {
+    width: 72px;
+    height: 72px;
+  }
+
+  .about__founder-kicker {
+    margin-bottom: 5px;
+    font-size: 0.56rem;
+  }
+
+  .about__founder-copy strong {
+    font-size: 0.94rem;
+  }
+
+  .about__founder-copy > span:not(.about__founder-kicker) {
+    font-size: 0.68rem;
+  }
+
+  .about__mobile-values {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .about__mobile-values span {
+    min-height: 40px;
+    padding: 0 11px;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(96, 165, 250, 0.1);
+    border-radius: 10px;
+    background: rgba(5, 14, 29, 0.46);
+    color: rgba(226, 232, 240, 0.78);
+    font-size: 0.71rem;
+    font-weight: 650;
+  }
+
+  .about__mobile-values span::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+  }
+}
+
+
+@media (max-width: 700px) {
+  .about {
+    padding: 34px 0 28px;
+  }
+
+  .about__mobile-trust h2 {
+    margin-top: 11px;
+    font-size: clamp(1.9rem, 9vw, 2.5rem);
+    line-height: 1.06;
+  }
+
+  .about__mobile-trust p {
+    margin-top: 12px;
+    font-size: 0.84rem;
+    line-height: 1.52;
+  }
+
+  .about__founder {
+    margin-top: 18px;
+  }
+
+  .about__mobile-values {
+    margin-top: 9px;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .about__mobile-values span {
+    min-height: 36px;
+  }
+}

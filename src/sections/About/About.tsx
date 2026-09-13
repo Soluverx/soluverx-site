@@ -50,6 +50,15 @@ function About() {
   return (
     <section className="about" id="sobre" ref={sectionRef}>
       <div className="about__container">
+        <div className="about__mobile-trust">
+          <span className="about__eyebrow">Quem conduz o projeto</span>
+          <h2>Você fala diretamente com quem entende e desenvolve a solução.</h2>
+          <p>
+            Na Soluverx, o contato é direto do entendimento inicial à entrega.
+            Isso reduz ruído, facilita decisões e mantém o projeto próximo da
+            necessidade real do negócio.
+          </p>
+        </div>
         <header className="about__header">
           <span className="about__eyebrow">Sobre a Soluverx</span>
 
@@ -97,7 +106,7 @@ function About() {
           </div>
 
           <div className="about__founder-copy">
-            <span className="about__founder-kicker">Quem conduz a Soluverx</span>
+            <span className="about__founder-kicker">Responsável pela Soluverx</span>
 
             <strong>Eric Rodrigues Campos</strong>
             <span>Engenharia de Software</span>
@@ -106,6 +115,12 @@ function About() {
           <div className="about__founder-detail" aria-hidden="true">
             <span />
           </div>
+        </div>
+
+        <div className="about__mobile-values" aria-label="Como a Soluverx trabalha">
+          <span>Contato direto</span>
+          <span>Desenvolvimento sob medida</span>
+          <span>Clareza no processo</span>
         </div>
       </div>
     </section>
