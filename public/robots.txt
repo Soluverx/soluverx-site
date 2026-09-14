@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://soluverx.com.br/sitemap.xml
+Sitemap: https://www.soluverx.com.br/sitemap.xml
