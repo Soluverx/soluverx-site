@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/privacidade",
-      "destination": "/index.html"
+      "destination": "/privacy.html"
     }
   ]
 }

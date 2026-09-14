@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type KeyboardEvent, type ReactNode } from 'react'
 import './Solutions.css'
 
 type SolutionId =
@@ -21,7 +21,7 @@ type Solution = {
 const solutions: Solution[] = [
   {
     id: 'custom',
-    title: 'Sistemas sob medida',
+    title: 'Software sob medida',
     description:
       'Quando sua operação precisa de uma ferramenta própria, criada em torno do jeito que o negócio realmente funciona.',
     when:
@@ -38,7 +38,7 @@ const solutions: Solution[] = [
   },
   {
     id: 'dashboard',
-    title: 'Dashboards',
+    title: 'Dashboards empresariais',
     description:
       'Quando os dados existem, mas você precisa enxergar tudo com mais clareza em um só lugar.',
     when:
@@ -54,7 +54,7 @@ const solutions: Solution[] = [
   },
   {
     id: 'automation',
-    title: 'Automações',
+    title: 'Automação de processos',
     description:
       'Quando tarefas repetitivas poderiam acontecer com menos trabalho manual.',
     when:
@@ -71,7 +71,7 @@ const solutions: Solution[] = [
   },
   {
     id: 'integration',
-    title: 'Integrações',
+    title: 'Integração de sistemas',
     description:
       'Quando duas ferramentas precisam trocar informações sem depender de copiar e colar.',
     when:
@@ -128,9 +128,46 @@ function Solutions() {
     setOpenId((current) => (current === id ? null : id))
   }
 
+  function selectMobileTab(id: SolutionId) {
+    setMobileId(id)
+  }
+
+  function handleMobileTabKeyDown(
+    event: KeyboardEvent<HTMLButtonElement>,
+    currentIndex: number,
+  ) {
+    const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End']
+
+    if (!keys.includes(event.key)) return
+
+    event.preventDefault()
+
+    let nextIndex = currentIndex
+
+    if (event.key === 'ArrowLeft') {
+      nextIndex = (currentIndex - 1 + primaryMobileSolutions.length) % primaryMobileSolutions.length
+    } else if (event.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % primaryMobileSolutions.length
+    } else if (event.key === 'Home') {
+      nextIndex = 0
+    } else if (event.key === 'End') {
+      nextIndex = primaryMobileSolutions.length - 1
+    }
+
+    const nextSolution = primaryMobileSolutions[nextIndex]
+
+    if (!nextSolution) return
+
+    selectMobileTab(nextSolution.id)
+    document.getElementById(`solution-tab-${nextSolution.id}`)?.focus()
+  }
+
   const mobileSolution = solutions.find((solution) => solution.id === mobileId) ?? solutions[0]
   const primaryMobileSolutions = solutions.slice(0, 3)
   const extraMobileSolutions = solutions.slice(3)
+  const hasPrimaryMobileSelection = primaryMobileSolutions.some(
+    (solution) => solution.id === mobileId,
+  )
 
   return (
     <section className="solutions" id="solucoes">
@@ -147,32 +184,50 @@ function Solutions() {
           </div>
 
           <p className="solutions__intro">
-            Nem todo problema precisa do mesmo tipo de software. Dependendo da
-            necessidade, a solução pode ser pequena e pontual ou evoluir para
-            algo mais completo.
+            Nem todo projeto de desenvolvimento de software precisa da mesma
+            abordagem. Dependendo da necessidade, a solução pode ser pequena e
+            pontual ou evoluir para algo mais completo.
           </p>
         </div>
 
         <div className="solutions__mobile">
           <div className="solutions__mobile-tabs" role="tablist" aria-label="Tipos de solução">
-            {primaryMobileSolutions.map((solution) => (
+            {primaryMobileSolutions.map((solution, index) => (
               <button
                 key={solution.id}
+                id={`solution-tab-${solution.id}`}
                 type="button"
                 role="tab"
                 aria-selected={mobileId === solution.id}
+                aria-controls="solution-mobile-panel"
+                tabIndex={
+                  mobileId === solution.id || (!hasPrimaryMobileSelection && index === 0)
+                    ? 0
+                    : -1
+                }
                 className={mobileId === solution.id ? 'is-active' : ''}
-                onClick={() => setMobileId(solution.id)}
+                onClick={() => selectMobileTab(solution.id)}
+                onKeyDown={(event) => handleMobileTabKeyDown(event, index)}
               >
-                {solution.title.replace('Sistemas sob medida', 'Sistema')}
+                {solution.title.replace('Software sob medida', 'Sob medida')}
               </button>
             ))}
           </div>
 
-          <article className="solutions__mobile-card">
+          <article
+            className="solutions__mobile-card"
+            id="solution-mobile-panel"
+            role="tabpanel"
+            aria-labelledby={
+              hasPrimaryMobileSelection
+                ? `solution-tab-${mobileId}`
+                : 'solution-mobile-title'
+            }
+            tabIndex={0}
+          >
             <span className="solutions__icon">{mobileSolution.icon}</span>
             <span className="solutions__mobile-kicker">Pode fazer sentido quando</span>
-            <h3>{mobileSolution.title}</h3>
+            <h3 id="solution-mobile-title">{mobileSolution.title}</h3>
             <p>{mobileSolution.description}</p>
 
             <div className="solutions__mobile-example">
@@ -200,6 +255,9 @@ function Solutions() {
                   onClick={() => {
                     setMobileId(solution.id)
                     setShowMoreMobile(false)
+                    requestAnimationFrame(() => {
+                      document.getElementById('solution-mobile-panel')?.focus()
+                    })
                   }}
                 >
                   <span className="solutions__icon">{solution.icon}</span>
@@ -220,11 +278,13 @@ function Solutions() {
             const isOpen = openId === solution.id
             const panelId = `solution-panel-${solution.id}`
             const buttonId = `solution-button-${solution.id}`
+            const titleId = `solution-title-${solution.id}`
 
             return (
               <article
                 className={`solutions__card${isOpen ? ' solutions__card--open' : ''}`}
                 key={solution.id}
+                aria-labelledby={titleId}
               >
                 <button
                   className="solutions__trigger"
@@ -243,7 +303,9 @@ function Solutions() {
                   </span>
 
                   <span className="solutions__card-copy">
-                    <strong>{solution.title}</strong>
+                    <strong id={titleId} role="heading" aria-level={3}>
+                      {solution.title}
+                    </strong>
                     <span>{solution.description}</span>
                   </span>
 

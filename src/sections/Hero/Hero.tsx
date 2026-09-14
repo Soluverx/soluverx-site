@@ -214,12 +214,14 @@ function Hero() {
             Tem algo no seu negócio dando mais trabalho do que deveria?
           </h1>
 
-          <p className="hero__lead">Talvez exista um jeito melhor de fazer.</p>
+          <p className="hero__lead">
+            A Soluverx desenvolve software sob medida para empresas.
+          </p>
 
           <p className="hero__text">
             Você não precisa chegar sabendo qual sistema precisa. Conte o que
-            está dando trabalho e a Soluverx ajuda a entender se existe uma
-            solução digital que faça sentido.
+            está dando trabalho e ajudamos a entender se sistemas personalizados
+            ou outra solução digital fazem sentido para o seu negócio.
           </p>
 
           <div className="hero__actions">
@@ -377,7 +379,7 @@ function Hero() {
                   <span className="hero__dashboard-kicker">
                     Uma possibilidade
                   </span>
-                  <h2>Visão geral</h2>
+                  <span className="hero__dashboard-heading">Visão geral</span>
                 </div>
               </div>
 

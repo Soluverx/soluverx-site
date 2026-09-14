@@ -3,28 +3,57 @@ import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.webp'
 import Footer from '../../components/Footer/Footer'
 import './Privacy.css'
 
+const privacyDescription =
+  'Entenda como a Soluverx trata informações enviadas pelo site e dados de navegação utilizados para análise e atendimento.'
+const privacyUrl = 'https://www.soluverx.com.br/privacidade'
+
 function Privacy() {
   useEffect(() => {
-    const previousTitle = document.title
-    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
-    const previousDescription = description?.content ?? ''
+    const setMetaContent = (selector: string, content: string) => {
+      const meta = document.querySelector<HTMLMetaElement>(selector)
+
+      if (meta) meta.content = content
+    }
 
     document.title = 'Política de Privacidade | Soluverx'
+    setMetaContent('meta[name="description"]', privacyDescription)
+    setMetaContent('meta[property="og:url"]', privacyUrl)
+    setMetaContent('meta[property="og:title"]', 'Política de Privacidade | Soluverx')
+    setMetaContent(
+      'meta[property="og:description"]',
+      'Saiba quais informações podem ser tratadas ao utilizar o site da Soluverx e para quais finalidades.',
+    )
+    setMetaContent('meta[name="twitter:title"]', 'Política de Privacidade | Soluverx')
+    setMetaContent(
+      'meta[name="twitter:description"]',
+      'Saiba como a Soluverx trata informações enviadas pelo site e dados de navegação.',
+    )
 
-    if (description) {
-      description.content =
-        'Entenda como a Soluverx trata informações enviadas pelo site e dados de navegação utilizados para análise e atendimento.'
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    const structuredData = document.querySelector<HTMLScriptElement>(
+      'script[type="application/ld+json"]',
+    )
+
+    if (canonical) canonical.href = privacyUrl
+
+    if (structuredData) {
+      structuredData.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Política de Privacidade | Soluverx',
+        url: privacyUrl,
+        description:
+          'Informações sobre o tratamento de dados enviados pelo site e de dados de navegação utilizados pela Soluverx.',
+        inLanguage: 'pt-BR',
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'Soluverx',
+          url: 'https://www.soluverx.com.br/',
+        },
+      })
     }
 
     window.scrollTo({ top: 0, behavior: 'auto' })
-
-    return () => {
-      document.title = previousTitle
-
-      if (description) {
-        description.content = previousDescription
-      }
-    }
   }, [])
 
   return (

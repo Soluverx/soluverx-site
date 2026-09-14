@@ -68,9 +68,9 @@ function About() {
 
           <div className="about__copy">
             <p>
-              A Soluverx nasceu com uma proposta simples: entender dificuldades
-              reais de negócios e transformar essas necessidades em soluções
-              digitais claras, úteis e sob medida.
+              A Soluverx é uma empresa de software que nasceu com uma proposta
+              simples: entender dificuldades reais de negócios e transformar
+              essas necessidades em soluções digitais claras, úteis e sob medida.
             </p>
 
             <p>
@@ -100,6 +100,8 @@ function About() {
               src="/about/eric-rodrigues.webp"
               alt="Eric Rodrigues Campos"
               className="about__founder-image"
+              width="900"
+              height="1125"
               loading="lazy"
               decoding="async"
             />

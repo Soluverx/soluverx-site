@@ -353,6 +353,13 @@
 }
 
 
-@media (max-width: 700px) {
-  .inclusion { display: none; }
+@media (max-width: 640px) {
+  .inclusion__friction:nth-child(n + 5) {
+    display: none;
+  }
+
+  .inclusion__core {
+    min-height: 112px;
+    padding: 20px;
+  }
 }

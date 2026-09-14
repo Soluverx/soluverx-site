@@ -286,6 +286,10 @@
   border-top: 1px solid rgba(96, 165, 250, 0.1);
 }
 
+.differentials__mobile-summary {
+  display: none;
+}
+
 .differentials__details-heading {
   margin-bottom: 28px;
   opacity: 0;
@@ -536,5 +540,60 @@
 
 
 @media (max-width: 700px) {
-  .differentials { display: none; }
+  .differentials {
+    padding: 58px 0 62px;
+  }
+
+  .differentials__intro {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    line-height: 1.58;
+  }
+
+  .differentials__manifesto,
+  .differentials__details {
+    display: none;
+  }
+
+  .differentials__mobile-summary {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .differentials__mobile-item {
+    min-height: 132px;
+    padding: 17px 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 1px solid rgba(96, 165, 250, 0.1);
+    border-radius: 13px;
+    background: rgba(5, 14, 29, 0.48);
+  }
+
+  .differentials__mobile-item h3 {
+    color: rgba(241, 245, 249, 0.93);
+    font-size: 0.88rem;
+    font-weight: 650;
+    line-height: 1.25;
+  }
+
+  .differentials__mobile-item p {
+    margin-top: 7px;
+    color: rgba(148, 163, 184, 0.7);
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 390px) {
+  .differentials__mobile-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .differentials__mobile-item {
+    min-height: auto;
+  }
 }

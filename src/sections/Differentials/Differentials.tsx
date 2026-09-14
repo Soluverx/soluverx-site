@@ -206,6 +206,21 @@ function Differentials() {
             ))}
           </div>
         </div>
+
+        <div
+          className="differentials__mobile-summary"
+          aria-label="Resumo dos diferenciais da Soluverx"
+        >
+          {differentials.slice(0, 4).map((item) => (
+            <article className="differentials__mobile-item" key={item.title}>
+              <span className="differentials__item-dot" aria-hidden="true" />
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )
