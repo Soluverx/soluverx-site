@@ -981,11 +981,17 @@
   gap: 8px;
 }
 
-.dev-future-links > div span {
+.dev-future-links > div a {
   padding: 6px 9px;
   border: 1px solid rgba(103, 232, 249, 0.12);
   border-radius: 999px;
   color: rgba(184, 247, 255, 0.8);
+  text-decoration: none;
+}
+
+.dev-future-links > div a:hover {
+  border-color: rgba(103, 232, 249, 0.26);
+  color: #e6fbff;
 }
 
 .dev-decision {

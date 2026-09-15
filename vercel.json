@@ -6,7 +6,19 @@
     },
     {
       "source": "/desenvolvimento-de-software",
-      "destination": "/index.html"
+      "destination": "/desenvolvimento-de-software/index.html"
+    },
+    {
+      "source": "/dashboards",
+      "destination": "/dashboards/index.html"
+    },
+    {
+      "source": "/automacao-de-processos",
+      "destination": "/automacao-de-processos/index.html"
+    },
+    {
+      "source": "/integracao-de-sistemas",
+      "destination": "/integracao-de-sistemas/index.html"
     }
   ]
 }

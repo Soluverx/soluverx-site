@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { closeOtherDetails } from '../../components/ExclusiveDetails/ExclusiveDetails'
 import './FAQ.css'
 
 type FAQItem = {
@@ -50,7 +51,6 @@ const faqItems: FAQItem[] = [
 ]
 
 function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [showAllMobile, setShowAllMobile] = useState(false)
 
   return (
@@ -62,26 +62,21 @@ function FAQ() {
           <h2 className="faq__title">Dúvidas antes de começar?</h2>
         </header>
 
-        <div className="faq__list" data-reveal-stagger>
+        <div className="faq__list" data-reveal-stagger data-exclusive-details>
           {faqItems.map((item, index) => {
-            const isOpen = openIndex === index
             const answerId = `faq-answer-${index}`
             const questionId = `faq-question-${index}`
 
             return (
-              <article
-                className={`faq__item${isOpen ? ' faq__item--open' : ''}${index >= 4 && !showAllMobile ? ' faq__item--mobile-hidden' : ''}`}
+              <details
+                className={`faq__item${index >= 4 && !showAllMobile ? ' faq__item--mobile-hidden' : ''}`}
                 key={item.question}
+                onToggle={closeOtherDetails}
               >
-                <button
+                <summary
                   className="faq__question"
                   id={questionId}
-                  type="button"
-                  aria-expanded={isOpen}
                   aria-controls={answerId}
-                  onClick={() =>
-                    setOpenIndex((current) => (current === index ? null : index))
-                  }
                 >
                   <span className="faq__number">
                     {String(index + 1).padStart(2, '0')}
@@ -93,20 +88,19 @@ function FAQ() {
                     <span />
                     <span />
                   </span>
-                </button>
+                </summary>
 
                 <div
                   className="faq__answer-wrap"
                   id={answerId}
                   role="region"
                   aria-labelledby={questionId}
-                  aria-hidden={!isOpen}
                 >
                   <div className="faq__answer">
                     <p>{item.answer}</p>
                   </div>
                 </div>
-              </article>
+              </details>
             )
           })}
         </div>

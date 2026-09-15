@@ -1,0 +1,42 @@
+.route-fallback {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background: #0b132b;
+  opacity: 0;
+  animation: route-fallback-appear 140ms ease 160ms forwards;
+}
+
+.route-fallback__indicator {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(148, 163, 184, 0.2);
+  border-top-color: rgba(103, 232, 249, 0.86);
+  border-radius: 50%;
+  animation: route-fallback-spin 720ms linear infinite;
+}
+
+@keyframes route-fallback-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes route-fallback-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-fallback {
+    opacity: 1;
+    animation: none;
+  }
+
+  .route-fallback__indicator {
+    border-color: rgba(103, 232, 249, 0.58);
+    animation: none;
+  }
+}

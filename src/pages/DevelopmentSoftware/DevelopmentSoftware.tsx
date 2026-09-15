@@ -1,14 +1,12 @@
-import { useEffect, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal'
+import { closeOtherDetails } from '../../components/ExclusiveDetails/ExclusiveDetails'
+import { usePageMeta } from '../../components/PageMeta/PageMeta'
+import { developmentSoftwareMetadata } from '../../config/serviceMetadata'
 import './DevelopmentSoftware.css'
-
-const pageUrl = 'https://www.soluverx.com.br/desenvolvimento-de-software'
-const pageTitle = 'Desenvolvimento de Software Sob Medida | Soluverx'
-const pageDescription =
-  'Desenvolvimento de software sob medida para empresas que precisam organizar processos, reduzir trabalho manual e criar ferramentas adaptadas à operação.'
 
 const fitSignals = [
   {
@@ -264,48 +262,7 @@ const faqs = [
 ]
 
 function DevelopmentSoftware() {
-  useEffect(() => {
-    const setMetaContent = (selector: string, content: string) => {
-      const meta = document.querySelector<HTMLMetaElement>(selector)
-      if (meta) meta.content = content
-    }
-
-    document.title = pageTitle
-    setMetaContent('meta[name="description"]', pageDescription)
-    setMetaContent('meta[property="og:url"]', pageUrl)
-    setMetaContent('meta[property="og:title"]', pageTitle)
-    setMetaContent(
-      'meta[property="og:description"]',
-      'Software sob medida para processos e necessidades que não se encaixam bem em ferramentas prontas.',
-    )
-    setMetaContent('meta[name="twitter:title"]', pageTitle)
-    setMetaContent('meta[name="twitter:description"]', pageDescription)
-
-    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
-    const structuredData = document.querySelector<HTMLScriptElement>(
-      'script[type="application/ld+json"]',
-    )
-
-    if (canonical) canonical.href = pageUrl
-
-    if (structuredData) {
-      structuredData.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Service',
-        name: 'Desenvolvimento de software sob medida',
-        serviceType: 'Desenvolvimento de software sob medida',
-        url: pageUrl,
-        description: pageDescription,
-        provider: {
-          '@type': 'Organization',
-          name: 'Soluverx',
-          url: 'https://www.soluverx.com.br/',
-        },
-      })
-    }
-
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [])
+  usePageMeta(developmentSoftwareMetadata)
 
   return (
     <>
@@ -528,11 +485,11 @@ function DevelopmentSoftware() {
             </div>
 
             <div className="dev-future-links" data-reveal="up">
-              <span>Em breve, páginas específicas sobre</span>
+              <span>Explore outras soluções</span>
               <div>
-                <span>Dashboards</span>
-                <span>Automações</span>
-                <span>Integrações</span>
+                <a href="/dashboards">Dashboards</a>
+                <a href="/automacao-de-processos">Automação de processos</a>
+                <a href="/integracao-de-sistemas">Integração de sistemas</a>
               </div>
             </div>
           </div>
@@ -656,9 +613,13 @@ function DevelopmentSoftware() {
                 <h2>Dúvidas sobre software sob medida</h2>
               </div>
 
-              <div className="dev-faq-list" data-reveal-stagger>
+              <div className="dev-faq-list" data-reveal-stagger data-exclusive-details>
                 {faqs.map((faq, index) => (
-                  <details className="dev-faq-item" key={faq.question}>
+                  <details
+                    className="dev-faq-item"
+                    key={faq.question}
+                    onToggle={closeOtherDetails}
+                  >
                     <summary>
                       <span className="dev-faq-item__number" aria-hidden="true">
                         {String(index + 1).padStart(2, '0')}

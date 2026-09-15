@@ -16,6 +16,8 @@ type Solution = {
   when: string
   outcome: string
   icon: ReactNode
+  href?: string
+  linkLabel?: string
 }
 
 const solutions: Solution[] = [
@@ -35,6 +37,8 @@ const solutions: Solution[] = [
         <path d="M8 13h3M8 16h6" />
       </svg>
     ),
+    href: '/desenvolvimento-de-software',
+    linkLabel: 'Saiba mais sobre software sob medida',
   },
   {
     id: 'dashboard',
@@ -51,6 +55,8 @@ const solutions: Solution[] = [
         <path d="M3.5 19.5h17" />
       </svg>
     ),
+    href: '/dashboards',
+    linkLabel: 'Saiba mais sobre dashboards empresariais',
   },
   {
     id: 'automation',
@@ -68,6 +74,8 @@ const solutions: Solution[] = [
         <path d="M6 6l2.1 2.1M15.9 15.9 18 18M18 6l-2.1 2.1M8.1 15.9 6 18" />
       </svg>
     ),
+    href: '/automacao-de-processos',
+    linkLabel: 'Saiba mais sobre automação de processos',
   },
   {
     id: 'integration',
@@ -84,6 +92,8 @@ const solutions: Solution[] = [
         <path d="M8.5 9.2 11.3 12 8.5 14.8M15.5 9.2 12.7 12l2.8 2.8" />
       </svg>
     ),
+    href: '/integracao-de-sistemas',
+    linkLabel: 'Saiba mais sobre integração de sistemas',
   },
   {
     id: 'internal',
@@ -235,12 +245,12 @@ function Solutions() {
               <p>{mobileSolution.when}</p>
             </div>
 
-            {mobileSolution.id === 'custom' && (
+            {mobileSolution.href && (
               <a
                 className="solutions__page-link"
-                href="/desenvolvimento-de-software"
+                href={mobileSolution.href}
               >
-                Conheça nosso desenvolvimento de software
+                {mobileSolution.linkLabel}
                 <span aria-hidden="true">→</span>
               </a>
             )}
@@ -348,12 +358,12 @@ function Solutions() {
                     <p>{solution.outcome}</p>
                   </div>
 
-                  {solution.id === 'custom' && (
+                  {solution.href && (
                     <a
                       className="solutions__page-link"
-                      href="/desenvolvimento-de-software"
+                      href={solution.href}
                     >
-                      Conheça nosso desenvolvimento de software
+                      {solution.linkLabel}
                       <span aria-hidden="true">→</span>
                     </a>
                   )}

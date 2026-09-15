@@ -5,9 +5,16 @@ import './Header.css'
 type HeaderProps = {
   processHrefOverride?: string
   solutionsHrefOverride?: string
+  faqHrefOverride?: string
+  contactHrefOverride?: string
 }
 
-function Header({ processHrefOverride, solutionsHrefOverride }: HeaderProps) {
+function Header({
+  processHrefOverride,
+  solutionsHrefOverride,
+  faqHrefOverride,
+  contactHrefOverride,
+}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
   const isHomePage = normalizedPath === '/'
@@ -17,8 +24,11 @@ function Header({ processHrefOverride, solutionsHrefOverride }: HeaderProps) {
     processHrefOverride ??
     (isDevelopmentSoftwarePage ? '#processo' : `${homePrefix}#processo`)
   const solutionsHref = solutionsHrefOverride ?? `${homePrefix}#solucoes`
-  const faqHref = isDevelopmentSoftwarePage ? '#faq' : `${homePrefix}#faq`
-  const contactHref = isDevelopmentSoftwarePage ? '#contato' : `${homePrefix}#contato`
+  const faqHref =
+    faqHrefOverride ?? (isDevelopmentSoftwarePage ? '#faq' : `${homePrefix}#faq`)
+  const contactHref =
+    contactHrefOverride ??
+    (isDevelopmentSoftwarePage ? '#contato' : `${homePrefix}#contato`)
 
   function closeMenu() {
     setIsMenuOpen(false)
