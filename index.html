@@ -77,13 +77,17 @@
       href="/social/apple-touch-icon.png"
     />
 
-    <!-- Preload do Hero -->
-    <link
-      rel="preload"
-      as="image"
-      href="/backgrounds/background1.webp"
-      fetchpriority="high"
-    />
+    <!-- Preload do Hero somente na Home -->
+    <script>
+      if (window.location.pathname === '/') {
+        const heroPreload = document.createElement('link')
+        heroPreload.rel = 'preload'
+        heroPreload.as = 'image'
+        heroPreload.href = '/backgrounds/background1.webp'
+        heroPreload.fetchPriority = 'high'
+        document.head.appendChild(heroPreload)
+      }
+    </script>
 
     <!-- Open Graph -->
     <meta

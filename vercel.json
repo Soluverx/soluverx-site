@@ -3,6 +3,10 @@
     {
       "source": "/privacidade",
       "destination": "/privacy.html"
+    },
+    {
+      "source": "/desenvolvimento-de-software",
+      "destination": "/index.html"
     }
   ]
 }

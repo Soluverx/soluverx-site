@@ -2,8 +2,23 @@ import { useEffect, useState } from 'react'
 import soluverxLogo from '../../assets/brand/soluverx-logo-transparent.webp'
 import './Header.css'
 
-function Header() {
+type HeaderProps = {
+  processHrefOverride?: string
+  solutionsHrefOverride?: string
+}
+
+function Header({ processHrefOverride, solutionsHrefOverride }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
+  const isHomePage = normalizedPath === '/'
+  const isDevelopmentSoftwarePage = normalizedPath === '/desenvolvimento-de-software'
+  const homePrefix = isHomePage ? '' : '/'
+  const processHref =
+    processHrefOverride ??
+    (isDevelopmentSoftwarePage ? '#processo' : `${homePrefix}#processo`)
+  const solutionsHref = solutionsHrefOverride ?? `${homePrefix}#solucoes`
+  const faqHref = isDevelopmentSoftwarePage ? '#faq' : `${homePrefix}#faq`
+  const contactHref = isDevelopmentSoftwarePage ? '#contato' : `${homePrefix}#contato`
 
   function closeMenu() {
     setIsMenuOpen(false)
@@ -34,7 +49,7 @@ function Header() {
       <header className="header">
         <div className="header__container">
           <a
-            href="#inicio"
+            href={`${homePrefix}#inicio`}
             className="header__logo"
             onClick={closeMenu}
             aria-label="Soluverx - Início"
@@ -56,24 +71,24 @@ function Header() {
             }`}
             aria-label="Navegação principal"
           >
-            <a href="#solucoes" onClick={closeMenu}>
+            <a href={solutionsHref} onClick={closeMenu}>
               Soluções
             </a>
 
-            <a href="#processo" onClick={closeMenu}>
+            <a href={processHref} onClick={closeMenu}>
               Como trabalhamos
             </a>
 
-            <a href="#sobre" onClick={closeMenu}>
+            <a href={`${homePrefix}#sobre`} onClick={closeMenu}>
               Sobre
             </a>
 
-            <a href="#faq" onClick={closeMenu}>
+            <a href={faqHref} onClick={closeMenu}>
               FAQ
             </a>
 
             <a
-              href="#contato"
+              href={contactHref}
               className="header__mobile-cta"
               onClick={closeMenu}
             >
@@ -81,7 +96,7 @@ function Header() {
             </a>
           </nav>
 
-          <a href="#contato" className="header__cta">
+          <a href={contactHref} className="header__cta">
             Fale conosco
           </a>
 

@@ -234,6 +234,16 @@ function Solutions() {
               <span>Na prática</span>
               <p>{mobileSolution.when}</p>
             </div>
+
+            {mobileSolution.id === 'custom' && (
+              <a
+                className="solutions__page-link"
+                href="/desenvolvimento-de-software"
+              >
+                Conheça nosso desenvolvimento de software
+                <span aria-hidden="true">→</span>
+              </a>
+            )}
           </article>
 
           <button
@@ -337,6 +347,16 @@ function Solutions() {
                     <span className="solutions__detail-label">O que pode fazer sentido</span>
                     <p>{solution.outcome}</p>
                   </div>
+
+                  {solution.id === 'custom' && (
+                    <a
+                      className="solutions__page-link"
+                      href="/desenvolvimento-de-software"
+                    >
+                      Conheça nosso desenvolvimento de software
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  )}
                 </div>
               </article>
             )
